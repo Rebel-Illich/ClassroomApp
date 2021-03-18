@@ -17,16 +17,15 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.db.DatabaseHelper;
-import com.hunter.myclassroommap.presenter.MainContractPresenter;
+import com.hunter.myclassroommap.db.DatabaseAdapter;
 import com.hunter.myclassroommap.presenter.MainPresenter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
-public class MainListFragment extends Fragment {
+
+public class MainListFragment extends Fragment implements MainPresenter.MainView {
     private AddFragment addFragment;
     private ControllerActivity.WorksWithAdd worksWithAdd;
 
@@ -36,8 +35,7 @@ public class MainListFragment extends Fragment {
     RecyclerView recyclerView;
     ImageView empty_imageView;
     TextView no_data;
-    DatabaseHelper myDb;
-    ArrayList<String> class_id, class_name, class_floor, class_roomnumber, class_numberOfStudents;
+    List<ClassRoom> dataList = new ArrayList<>();
     ControllerAdapter controllerAdapter;
 
     public static MainListFragment newInstance(ControllerActivity.WorksWithAdd worksWithAdd) {
@@ -58,6 +56,7 @@ public class MainListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        presenter = new MainPresenter(new DatabaseAdapter(requireContext()), this);
         recyclerView = view.findViewById(R.id.recyclerView);
 
         add_button = view.findViewById(R.id.add_button);
@@ -70,25 +69,35 @@ public class MainListFragment extends Fragment {
             }
         });
 
-        myDb = new DatabaseHelper(getActivity());
-        class_id = new ArrayList<>();
-        class_name = new ArrayList<>();
-        class_floor = new ArrayList<>();
-        class_roomnumber = new ArrayList<>();
-        class_numberOfStudents = new ArrayList<>();
+        controllerAdapter = new ControllerAdapter(worksWithAdd, getContext(), dataList);
+        recyclerView.setAdapter(controllerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
 
-        List<ClassRoom> classRoomList = presenter.restoreDataArrays(class_id, class_name, class_floor, class_roomnumber, class_numberOfStudents);
-        if (classRoomList.isEmpty()) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.restoreDataArrays();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        presenter.detachView();
+    }
+
+    @Override
+    public void showData(List<ClassRoom> data) {
+        if (data.isEmpty()) {
             empty_imageView.setVisibility(View.VISIBLE);
             no_data.setVisibility(View.VISIBLE);
         } else  {
             empty_imageView.setVisibility(View.GONE);
             no_data.setVisibility(View.GONE);
         }
-
-        controllerAdapter = new ControllerAdapter(worksWithAdd, getContext(), classRoomList);
-        recyclerView.setAdapter(controllerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        dataList.clear();
+        dataList.addAll(data);
+        controllerAdapter.notifyDataSetChanged();
     }
 
     public static class ClassRoom {

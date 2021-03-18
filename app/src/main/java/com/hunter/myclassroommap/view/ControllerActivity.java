@@ -89,7 +89,7 @@ public class ControllerActivity  extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper myDB = new DatabaseHelper(ControllerActivity.this);
-                myDB.deleteAllData();
+ //               myDB.deleteAllData();
 
                 //Refresh Fragment
                 mainListFragment = MainListFragment.newInstance(worksWithAdd);

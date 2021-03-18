@@ -17,7 +17,7 @@ import com.hunter.myclassroommap.db.DatabaseHelper;
 import com.hunter.myclassroommap.presenter.AddContractPresenter;
 
 
-public class AddFragment extends Fragment implements AddContractPresenter {
+public class AddFragment extends Fragment {
 
     private ControllerActivity.WorksWithAdd worksWithAdd;
     EditText title_input, author_input, pages_input, countOfStudents;

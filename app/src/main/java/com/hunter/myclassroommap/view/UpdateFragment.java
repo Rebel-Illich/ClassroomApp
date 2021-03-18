@@ -19,8 +19,6 @@ import android.widget.EditText;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.DatabaseHelper;
-import com.hunter.myclassroommap.presenter.UpdateContractPresenter;
-
 
 public class UpdateFragment extends Fragment {
     private static final String TAG = "UpdateFragment";

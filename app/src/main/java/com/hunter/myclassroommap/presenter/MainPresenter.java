@@ -6,34 +6,27 @@ import com.hunter.myclassroommap.db.DatabaseHelper;
 import com.hunter.myclassroommap.view.MainListFragment;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class MainPresenter {
+public class MainPresenter implements MainContractPresenter {
 
     private final DatabaseAdapter databaseAdapter;
-    private MainListFragment mainListFragment;
+    private MainView mainListFragment;
     private DatabaseHelper myDb;
 
 
-    public MainPresenter( DatabaseAdapter databaseAdapter, MainListFragment mainListFragment) {
+    public MainPresenter( DatabaseAdapter databaseAdapter, MainView mainListFragment) {
         this.databaseAdapter = databaseAdapter;
         this.mainListFragment = mainListFragment;
-    }
-
-    public void attachView(MainListFragment mainListFragment) {
-        mainListFragment = mainListFragment;
     }
 
     public void detachView() {
         mainListFragment = null;
     }
 
-    public List<MainListFragment.ClassRoom> restoreDataArrays(ArrayList<String> class_id, ArrayList<String> class_name, ArrayList<String> class_floor, ArrayList<String> class_roomnumber, ArrayList<String> class_numberOfStudents) {
+    public void restoreDataArrays() {
         Cursor cursor = databaseAdapter.readAllData();
-        if (cursor.getCount() == 0) {
-            return Collections.EMPTY_LIST;
-        } else {
+        if (cursor.getCount() != 0) {
             List<MainListFragment.ClassRoom> classesList = new ArrayList<>();
             while (cursor.moveToNext()) {
                 MainListFragment.ClassRoom newClass = new MainListFragment.ClassRoom();
@@ -44,7 +37,12 @@ public class MainPresenter {
                 newClass.class_numberOfStudents= cursor.getString(4);
                 classesList.add(newClass);
             }
-            return classesList;
+            mainListFragment.showData(classesList);
         }
+    }
+
+    public interface MainView {
+        void showData(List<MainListFragment.ClassRoom> data);
+    }
 }
-}
+

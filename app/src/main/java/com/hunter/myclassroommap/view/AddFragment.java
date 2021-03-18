@@ -14,9 +14,10 @@ import android.widget.EditText;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.DatabaseHelper;
+import com.hunter.myclassroommap.presenter.AddContractPresenter;
 
 
-public class AddFragment extends Fragment {
+public class AddFragment extends Fragment implements AddContractPresenter {
 
     private ControllerActivity.WorksWithAdd worksWithAdd;
     EditText title_input, author_input, pages_input, countOfStudents;
@@ -48,10 +49,10 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 DatabaseHelper myDB = new DatabaseHelper(getActivity());
-                myDB.insertData(title_input.getText().toString().trim(),
-                        Integer.parseInt(author_input.getText().toString().trim()),
-                        Integer.parseInt(pages_input.getText().toString().trim()),
-                        Integer.parseInt(countOfStudents.getText().toString().trim()));
+//                myDB.insertData(title_input.getText().toString().trim(),
+//                        Integer.parseInt(author_input.getText().toString().trim()),
+//                        Integer.parseInt(pages_input.getText().toString().trim()),
+//                        Integer.parseInt(countOfStudents.getText().toString().trim()));
             }
         });
     }

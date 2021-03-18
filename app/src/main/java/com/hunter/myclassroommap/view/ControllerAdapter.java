@@ -1,6 +1,5 @@
 package com.hunter.myclassroommap.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,23 +13,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hunter.myclassroommap.R;
+import java.util.List;
 
-import java.util.ArrayList;
-
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.MyViewHolder> {
 
     private ControllerActivity.WorksWithAdd worksWithAdd;
     private Context context;
-    private ArrayList class_id, class_name, class_floor, class_roomnumber, class_numberOfStudents;
+    private List<MainListFragment.ClassRoom> classRoomList;
 
-    public CustomAdapter(ControllerActivity.WorksWithAdd worksWithAdd, Context context, ArrayList<String> class_id, ArrayList<String> class_name, ArrayList<String> class_roomnumber, ArrayList<String> class_floor , ArrayList<String> class_numberOfStudents) {
+    public ControllerAdapter(ControllerActivity.WorksWithAdd worksWithAdd, Context context, List<MainListFragment.ClassRoom> classRoomList) {
         this.worksWithAdd = worksWithAdd;
         this.context = context;
-        this.class_id = class_id;
-        this.class_name = class_name;
-        this.class_floor = class_floor;
-        this.class_roomnumber = class_roomnumber;
-        this.class_numberOfStudents = class_numberOfStudents;
+        this.classRoomList = classRoomList;
     }
 
     @NonNull
@@ -43,10 +37,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.class_id_txt.setText(String.valueOf(class_id.get(position)));
-        holder.class_name.setText(String.valueOf(class_name.get(position)));
-        holder.numberOfStudents.setText(String.valueOf(class_numberOfStudents.get(position)));
-        holder.room_number.setText(String.valueOf(class_roomnumber.get(position)));
+        MainListFragment.ClassRoom item = classRoomList.get(position);
+        holder.class_id_txt.setText(String.valueOf(item.class_id));
+        holder.class_name.setText(String.valueOf(item.class_name));
+        holder.numberOfStudents.setText(String.valueOf(item.class_numberOfStudents));
+        holder.room_number.setText(String.valueOf(item.class_roomnumber));
 
         //Recyclerview onClickListener
 
@@ -54,11 +49,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             @Override
             public void onClick(View view) {
                 worksWithAdd.updateClass(
-                    String.valueOf(class_id.get(position)),
-                    String.valueOf(class_name.get(position)),
+                    String.valueOf(item.class_name),
+                    String.valueOf(item.class_floor),
                     "",
-                    String.valueOf(class_roomnumber.get(position)),
-                    String.valueOf(class_numberOfStudents.get(position))
+                    String.valueOf(item.class_roomnumber),
+                    String.valueOf(item.class_numberOfStudents)
                 );
             }
         });
@@ -66,7 +61,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return class_id.size();
+        return classRoomList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

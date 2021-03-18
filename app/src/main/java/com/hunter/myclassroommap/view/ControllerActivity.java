@@ -16,7 +16,7 @@ import com.hunter.myclassroommap.db.DatabaseHelper;
 public class ControllerActivity  extends AppCompatActivity{
 
     private AddFragment addFragment;
-    private MainFragment mainFragment;
+    private MainListFragment mainListFragment;
     private UpdateFragment updateFragment;
     private WorksWithAdd worksWithAdd;
 
@@ -27,11 +27,9 @@ public class ControllerActivity  extends AppCompatActivity{
 
         worksWithAdd= new WorksWithAdd();
 
-        mainFragment = MainFragment.newInstance(worksWithAdd);
+        mainListFragment = MainListFragment.newInstance(worksWithAdd);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainFragment)
-                .commit();
+        worksWithAdd.mainClass();
     }
 
     class WorksWithAdd{
@@ -62,7 +60,7 @@ public class ControllerActivity  extends AppCompatActivity{
 
         void mainClass() {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainFragment)
+                .replace(R.id.main_container, mainListFragment)
                 .addToBackStack(null)
                 .commit();
         }
@@ -92,12 +90,14 @@ public class ControllerActivity  extends AppCompatActivity{
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper myDB = new DatabaseHelper(ControllerActivity.this);
                 myDB.deleteAllData();
-                //Refresh Activity
-                Intent intent = new Intent(ControllerActivity.this, ControllerActivity.class);
-                startActivity(intent);
-                finish();
+
+                //Refresh Fragment
+                mainListFragment = MainListFragment.newInstance(worksWithAdd);
+
+                worksWithAdd.mainClass();
             }
         });
+
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -105,7 +105,4 @@ public class ControllerActivity  extends AppCompatActivity{
         });
         builder.create().show();
     }
-
-
-
 }

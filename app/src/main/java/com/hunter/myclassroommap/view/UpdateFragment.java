@@ -19,6 +19,7 @@ import android.widget.EditText;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.DatabaseHelper;
+import com.hunter.myclassroommap.presenter.UpdateContractPresenter;
 
 
 public class UpdateFragment extends Fragment {
@@ -78,7 +79,7 @@ public class UpdateFragment extends Fragment {
                 room = room_input.getText().toString().trim();
                 floor = floor_input.getText().toString().trim();
                 countOfStudents = countOfStudents_input.getText().toString().trim();
-                myDB.updateData(id, name, Integer.parseInt(room), Integer.parseInt(floor), Integer.parseInt(countOfStudents));
+//                myDB.updateData(id, name, Integer.parseInt(room), Integer.parseInt(floor), Integer.parseInt(countOfStudents));
             }
         });
         delete_button.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +122,7 @@ public class UpdateFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 DatabaseHelper myDB = new DatabaseHelper(getActivity());
-                myDB.deleteOneRow(id);
+//                myDB.deleteOneRow(id);
                 getActivity().finish();
             }
         });

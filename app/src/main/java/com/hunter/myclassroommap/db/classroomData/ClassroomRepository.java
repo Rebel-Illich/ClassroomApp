@@ -16,7 +16,6 @@ public class ClassroomRepository {
 
     private ClassroomDatabase dbHelper;
     private SQLiteDatabase database;
-    private Context context;
 
     public ClassroomRepository(Context context) {
         dbHelper = new ClassroomDatabase(context.getApplicationContext());
@@ -38,39 +37,39 @@ public class ClassroomRepository {
         return database.query(ClassroomDatabase.TABLE_NAME, columns, null, null, null, null, null);
     }
 
-    public List<ClassRoom> getUsers() {
-        ArrayList<ClassRoom> users = new ArrayList<>();
-        Cursor cursor = getAllEntries();
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ID));
-            String name = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME));
-            int roomNumber = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
-            int floor = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
-            int numberOfStudents = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
-            users.add(new ClassRoom(id, name, roomNumber, floor, numberOfStudents));
-        }
-        cursor.close();
-        return users;
-    }
+//    public List<ClassRoom> getUsers() {
+//        ArrayList<ClassRoom> users = new ArrayList<>();
+//        Cursor cursor = getAllEntries();
+//        while (cursor.moveToNext()) {
+//            int id = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ID));
+//            String name = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME));
+//            int roomNumber = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
+//            int floor = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
+//            int numberOfStudents = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
+//            users.add(new ClassRoom(id, name, roomNumber, floor, numberOfStudents));
+//        }
+//        cursor.close();
+//        return users;
+//    }
 
     public long getCount() {
         return DatabaseUtils.queryNumEntries(database, ClassroomDatabase.TABLE_NAME);
     }
 
-    public ClassRoom getUser(long id) {
-        ClassRoom classRoom = null;
-        String query = String.format("SELECT * FROM %s WHERE %s=?", ClassroomDatabase.TABLE_NAME, ClassroomDatabase.COLUMN_ID);
-        Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
-        if (cursor.moveToFirst()) {
-            String name = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME));
-            int roomNumber = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
-            int floor = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_FLOOR));
-            int numberOfStudents = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS));
-            classRoom = new ClassRoom(id, name, roomNumber, floor, numberOfStudents);
-        }
-        cursor.close();
-        return classRoom;
-    }
+//    public ClassRoom getUser(long id) {
+//        ClassRoom classRoom = null;
+//        String query = String.format("SELECT * FROM %s WHERE %s=?", ClassroomDatabase.TABLE_NAME, ClassroomDatabase.COLUMN_ID);
+//        Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(id)});
+//        if (cursor.moveToFirst()) {
+//            String name = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME));
+//            int roomNumber = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOMNUMBER));
+//            int floor = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_FLOOR));
+//            int numberOfStudents = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS));
+//            classRoom = new ClassRoom(id, name, roomNumber, floor, numberOfStudents);
+//        }
+//        cursor.close();
+//        return classRoom;
+//    }
 
     public long delete(long userId) {
 

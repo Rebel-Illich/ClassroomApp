@@ -9,7 +9,7 @@ public interface AddClassRoomContract {
 
     interface Presenter {
 
-        void addNewClassRoom(String className, int classNumber, int floor, int classNumberOfStudents);
+        void addNewClassRoom(String className, long classNumber, long floor, long classNumberOfStudents);
 
         void detachView();
     }

@@ -4,19 +4,12 @@ public class ClassRoom {
 
     private long id;
     private String classroomName;
-    private int classroomRoomNumber;
-    private int classroomFloor;
-    private int numberOfStudents;
+    private long classroomRoomNumber;
+    private long classroomFloor;
+    private long numberOfStudents;
 
-    public ClassRoom(long id, String classroomName, int classroomRoomNumber, int classroomFloor, int numberOfStudents) {
-        this.id = id;
-        this.classroomName = classroomName;
-        this.classroomRoomNumber = classroomRoomNumber;
-        this.classroomFloor = classroomFloor;
-        this.numberOfStudents = numberOfStudents;
-    }
 
-    public ClassRoom(String classroomName, int classroomRoomNumber, int classroomFloor, int numberOfStudents) {
+    public ClassRoom(String classroomName, long classroomRoomNumber, long classroomFloor, long numberOfStudents) {
         this.classroomName = classroomName;
         this.classroomRoomNumber = classroomRoomNumber;
         this.classroomFloor = classroomFloor;
@@ -27,7 +20,7 @@ public class ClassRoom {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -39,28 +32,27 @@ public class ClassRoom {
         this.classroomName = classroomName;
     }
 
-    public int getClassroomRoomNumber() {
+    public long getClassroomRoomNumber() {
         return classroomRoomNumber;
     }
 
-    public void setClassroomRoomNumber(int classroomRoomNumber) {
+    public void setClassroomRoomNumber(long classroomRoomNumber) {
         this.classroomRoomNumber = classroomRoomNumber;
     }
 
-    public int getClassroomFloor() {
+    public long getClassroomFloor() {
         return classroomFloor;
     }
 
-    public void setClassroomFloor(int classroomFloor) {
+    public void setClassroomFloor(long classroomFloor) {
         this.classroomFloor = classroomFloor;
     }
 
-    public int getNumberOfStudents() {
+    public long getNumberOfStudents() {
         return numberOfStudents;
     }
 
-    public void setNumberOfStudents(int numberOfStudents) {
+    public void setNumberOfStudents(long numberOfStudents) {
         this.numberOfStudents = numberOfStudents;
     }
-
-  }
+}

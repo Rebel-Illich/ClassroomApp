@@ -70,21 +70,25 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
         if (nameAddInput.getText().toString().length() == 0) {
             nameAddInput.setError("The First line is not filled!");
         } else if (roomAddInput.getText().toString().length() == 0) {
-            nameAddInput.setError("The Second line is not filled!");
+            roomAddInput.setError("The Second line is not filled!");
         } else if (floorAddInput.getText().toString().length() == 0) {
             floorAddInput.setError("The Third line is not filled!");
-        } else if(floorAddInput.getText().toString().length() == 0){
+        } else if(countOfStudentsAddInput.getText().toString().length() == 0){
               countOfStudentsAddInput.setError("The Four line is not filled!");
         } else {
-            String className = String.valueOf(nameAddInput.getText());
-            int classNumber = Integer.parseInt(roomAddInput.getText().toString());
-            int floor = Integer.parseInt(floorAddInput.getText().toString());
-            int classNumberOfStudents = Integer.parseInt(countOfStudentsAddInput.getText().toString());
+            try{
+                String className = nameAddInput.getText().toString().trim();
+                long classNumber = Integer.parseInt(roomAddInput.getText().toString().trim());
+                long floor = Integer.parseInt(floorAddInput.getText().toString().trim());
+                long classNumberOfStudents = Integer.parseInt(countOfStudentsAddInput.getText().toString().trim());
 
-            addPresenter.addNewClassRoom(className, classNumber, floor, classNumberOfStudents);
+                addPresenter.addNewClassRoom(className, classNumber, floor, classNumberOfStudents);
 
-            progressDialog = ProgressDialog.show(getActivity(),"Adding new Classroom","loading...");
+                progressDialog = ProgressDialog.show(getActivity(),"Adding new Classroom","loading...");
 
+            } catch(NumberFormatException ex){
+                Toast.makeText(getActivity(), "Do not write long numbers!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
+import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomContract;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomPresenter;
 
@@ -35,7 +36,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     private EditText floorUpdate;
     private EditText countOfStudentsUpdate;
     Button updateButton, deleteButton;
-    String id, name, floor, room, countOfStudents;
+    private String id;
 
 
     public static UpdateClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
@@ -74,15 +75,13 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
                 classroomUpdateFields();
             }
         });
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 confirmDialog();
             }
         });
-    }
-
-    public void setData(String id, String name, String floor, String room, String countOfStudent) {
     }
 
     @Override
@@ -104,17 +103,6 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     }
 
     private void getAndSetIntentData(){
-        if(getActivity().getIntent().hasExtra("id") && getActivity().getIntent().hasExtra("name") &&
-                getActivity().getIntent().hasExtra("room") && getActivity().getIntent().hasExtra("countOfStudents")){
-
-            //Getting Data from Intent
-            id = getActivity().getIntent().getStringExtra("id");
-            name = getActivity().getIntent().getStringExtra("name");
-            room = getActivity().getIntent().getStringExtra("room");
-            floor = getActivity().getIntent().getStringExtra("floor");
-
-            //Setting Intent Data
-        }
         currentClassId = getActivity().getIntent().getIntExtra("classroomId",0);
         nameUpdate.setText(String.valueOf(getActivity().getIntent().getStringExtra("classroomName")));
         roomUpdate.setText(String.valueOf(getActivity().getIntent().getIntExtra("classroomRoom",0)));
@@ -140,8 +128,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
 
     public void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete " + name + " ?");
-        builder.setMessage("Are you sure you want to delete " + name + " ?");
+        builder.setTitle("Delete " + nameUpdate + " ?");
+        builder.setMessage("Are you sure you want to delete " + nameUpdate + " ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -156,5 +144,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
             }
         });
         builder.create().show();
+    }
+
+    public void setData(String id, String name, String floor, String room, String countOfStudent) {
     }
 }

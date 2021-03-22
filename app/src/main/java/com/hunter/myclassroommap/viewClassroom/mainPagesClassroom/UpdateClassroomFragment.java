@@ -36,8 +36,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     private EditText floorUpdate;
     private EditText countOfStudentsUpdate;
     Button updateButton, deleteButton;
-    private String id;
-
+    private String id, name, room, floor, countOfStudents;
 
     public static UpdateClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
         UpdateClassroomFragment instance =  new UpdateClassroomFragment();
@@ -71,8 +70,9 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
                 classroomUpdateFields();
+
+                progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
             }
         });
 
@@ -116,7 +116,9 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         } else if (roomUpdate.getText().toString().length() == 0) {
             roomUpdate.setError("The Second line is not filled!");
         } else if (floorUpdate.getText().toString().length() == 0) {
-            floorUpdate.setError("The Third line is not filled!");
+            floorUpdate.setError("The Four line is not filled!");
+        } else if (countOfStudentsUpdate.getText().toString().length() == 0) {
+            countOfStudentsUpdate.setError("The Four line is not filled!");
         } else {
             String classroomName = String.valueOf(nameUpdate.getText());
             int classroomRoomNumber = Integer.parseInt(countOfStudentsUpdate.getText().toString());
@@ -147,5 +149,10 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     }
 
     public void setData(String id, String name, String floor, String room, String countOfStudent) {
+        this.id = id;
+        this.name = name;
+        this.room = room;
+        this.floor = floor;
+        this.countOfStudents = countOfStudent;
     }
 }

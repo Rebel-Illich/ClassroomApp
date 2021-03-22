@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,21 +42,28 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
         MainClassroomFragment.ClassRoom item = classRoomList.get(position);
         holder.class_id_txt.setText(String.valueOf(item.class_id));
         holder.class_name.setText(String.valueOf(item.class_name));
+//      holder.room_number.setText(String.valueOf(item.class_roomnumber));
         holder.numberOfStudents.setText(String.valueOf(item.class_numberOfStudents));
-       // holder.room_number.setText(String.valueOf(item.class_roomnumber));
+
+        holder.editClassroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                worksWithAdd.updateClass(
+                        String.valueOf(item.class_name),
+                        String.valueOf(item.class_floor),
+                        "",
+                        String.valueOf(item.class_roomnumber),
+                        String.valueOf(item.class_numberOfStudents)
+                );
+            }
+        });
 
         //Recyclerview onClickListener
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                worksWithAdd.updateClass(
-                    String.valueOf(item.class_name),
-                    String.valueOf(item.class_floor),
-                    "",
-                    String.valueOf(item.class_roomnumber),
-                    String.valueOf(item.class_numberOfStudents)
-                );
+
             }
         });
     }
@@ -67,6 +75,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        ImageButton editClassroom;
         TextView class_id_txt, class_name, numberOfStudents, room_number;
         LinearLayout mainLayout;
 
@@ -75,6 +84,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
             class_id_txt = itemView.findViewById(R.id.class_id_txt);
             class_name = itemView.findViewById(R.id.class_name_txt);
             numberOfStudents = itemView.findViewById(R.id.numberOfStudents);
+            editClassroom = itemView.findViewById(R.id.buttonEditClass);
             mainLayout = itemView.findViewById(R.id.mainLayout);
 
             //Animate Recyclerview

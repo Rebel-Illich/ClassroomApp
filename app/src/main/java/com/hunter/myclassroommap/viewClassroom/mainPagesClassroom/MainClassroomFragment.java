@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.view.mainPageClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
 
 import android.os.Bundle;
 
@@ -17,14 +17,14 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
-import com.hunter.myclassroommap.presenter.MainPresenter;
+import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class MainListFragment extends Fragment implements MainPresenter.MainView {
+public class MainClassroomFragment extends Fragment implements MainPresenter.MainView {
     private AddClassRoomFragment addClassRoomFragment;
     private MainClassroomActivity.WorksWithAdd worksWithAdd;
 
@@ -37,8 +37,8 @@ public class MainListFragment extends Fragment implements MainPresenter.MainView
     List<ClassRoom> dataList = new ArrayList<>();
     ClassroomAdapter classroomAdapter;
 
-    public static MainListFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
-        MainListFragment instance =  new MainListFragment();
+    public static MainClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
+        MainClassroomFragment instance =  new MainClassroomFragment();
         instance.worksWithAdd = worksWithAdd;
         return instance;
     }

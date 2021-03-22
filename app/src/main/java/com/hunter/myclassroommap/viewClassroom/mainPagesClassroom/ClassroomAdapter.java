@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.view.mainPageClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,9 +20,9 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
 
     private MainClassroomActivity.WorksWithAdd worksWithAdd;
     private Context context;
-    private List<MainListFragment.ClassRoom> classRoomList;
+    private List<MainClassroomFragment.ClassRoom> classRoomList;
 
-    public ClassroomAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<MainListFragment.ClassRoom> classRoomList) {
+    public ClassroomAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<MainClassroomFragment.ClassRoom> classRoomList) {
         this.worksWithAdd = worksWithAdd;
         this.context = context;
         this.classRoomList = classRoomList;
@@ -38,7 +38,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MainListFragment.ClassRoom item = classRoomList.get(position);
+        MainClassroomFragment.ClassRoom item = classRoomList.get(position);
         holder.class_id_txt.setText(String.valueOf(item.class_id));
         holder.class_name.setText(String.valueOf(item.class_name));
         holder.numberOfStudents.setText(String.valueOf(item.class_numberOfStudents));

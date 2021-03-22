@@ -1,7 +1,6 @@
-package com.hunter.myclassroommap.view.mainPageClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.view.addClassroom.AddClassRoomContract;
-import com.hunter.myclassroommap.view.addClassroom.AddClassRoomPresenter;
+import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomContract;
+import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomPresenter;
 
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {

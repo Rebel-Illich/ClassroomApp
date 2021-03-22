@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.presenter;
+package com.hunter.myclassroommap.viewClassroom.mainClassroom;
 
 public interface MainContractPresenter {
 

@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.view.addClassroom;
+package com.hunter.myclassroommap.viewClassroom.addClassroom;
 
 public interface AddClassRoomContract {
 

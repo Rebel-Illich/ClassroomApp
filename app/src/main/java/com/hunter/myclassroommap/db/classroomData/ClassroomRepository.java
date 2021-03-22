@@ -100,22 +100,6 @@ public class ClassroomRepository {
         db.execSQL("DELETE FROM " + dbHelper.TABLE_NAME);
     }
 
-    public void updateData(String id, String name, int room, int floor, int countOfStudents) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(ClassroomDatabase.COLUMN_NAME, name);
-        cv.put(ClassroomDatabase.COLUMN_ROOMNUMBER, room);
-        cv.put(ClassroomDatabase.COLUMN_FLOOR, floor);
-        cv.put(ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS, countOfStudents);
-
-        long result = db.update(ClassroomDatabase.TABLE_NAME, cv, "_id=?", new String[]{id});
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     public long insertData(ClassRoom classRoom) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -125,5 +109,17 @@ public class ClassroomRepository {
         cv.put(ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS, classRoom.getNumberOfStudents());
 
         return db.insert(ClassroomDatabase.TABLE_NAME, null, cv);
+    }
+
+    public long updateData(ClassRoom classRoom) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(ClassroomDatabase.COLUMN_NAME,  classRoom.getClassroomName());
+        cv.put(ClassroomDatabase.COLUMN_ROOMNUMBER, classRoom.getClassroomRoomNumber());
+        cv.put(ClassroomDatabase.COLUMN_FLOOR, classRoom.getClassroomFloor());
+        cv.put(ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS, classRoom.getNumberOfStudents());
+
+        return db.update(ClassroomDatabase.TABLE_NAME, cv ,ClassroomDatabase.COLUMN_ID + " = " +  classRoom.getId(),null);
     }
 }

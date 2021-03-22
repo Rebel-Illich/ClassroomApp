@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.view.mainPageClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 public class MainClassroomActivity extends AppCompatActivity{
 
     private AddClassRoomFragment addClassRoomFragment;
-    private MainListFragment mainListFragment;
-    private UpdateFragment updateFragment;
+    private MainClassroomFragment mainClassroomFragment;
+    private UpdateClassroomFragment updateClassroomFragment;
     private WorksWithAdd worksWithAdd;
     private ClassroomRepository classroomRepository;
 
@@ -27,7 +27,7 @@ public class MainClassroomActivity extends AppCompatActivity{
 
         worksWithAdd= new WorksWithAdd();
 
-        mainListFragment = MainListFragment.newInstance(worksWithAdd);
+        mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
 
         worksWithAdd.mainClass();
     }
@@ -48,20 +48,20 @@ public class MainClassroomActivity extends AppCompatActivity{
         }
 
         void updateClass(String id, String name, String floor, String room, String countOfStudent){
-            if (updateFragment == null) {
-                updateFragment = UpdateFragment.newInstance(worksWithAdd);
+            if (updateClassroomFragment == null) {
+                updateClassroomFragment = UpdateClassroomFragment.newInstance(worksWithAdd);
             }
-            updateFragment.setData(id, name, floor, room, countOfStudent);
+            updateClassroomFragment.setData(id, name, floor, room, countOfStudent);
 
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, updateFragment)
+                .replace(R.id.main_container, updateClassroomFragment)
                 .addToBackStack(null)
                 .commit();
         }
 
         void mainClass() {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainListFragment)
+                .replace(R.id.main_container, mainClassroomFragment)
                 .addToBackStack(null)
                 .commit();
         }
@@ -93,7 +93,7 @@ public class MainClassroomActivity extends AppCompatActivity{
                 classroomRepository.deleteAllData();
 
                   // Refresh Fragment
-                mainListFragment = MainListFragment.newInstance(worksWithAdd);
+                mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
 
                 worksWithAdd.mainClass();
             }

@@ -1,8 +1,8 @@
-package com.hunter.myclassroommap.presenter;
+package com.hunter.myclassroommap.viewClassroom.mainClassroom;
 
 import android.database.Cursor;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
-import com.hunter.myclassroommap.view.mainPageClassroom.MainListFragment;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ public class MainPresenter implements MainContractPresenter {
     public void restoreDataArrays() {
         Cursor cursor = classroomRepository.readAllData();
         if (cursor.getCount() != 0) {
-            List<MainListFragment.ClassRoom> classesList = new ArrayList<>();
+            List<MainClassroomFragment.ClassRoom> classesList = new ArrayList<>();
             while (cursor.moveToNext()) {
-                MainListFragment.ClassRoom newClass = new MainListFragment.ClassRoom();
+                MainClassroomFragment.ClassRoom newClass = new MainClassroomFragment.ClassRoom();
                 newClass.class_id = cursor.getString(0);
                 newClass.class_name = cursor.getString(1);
                 newClass.class_floor = cursor.getString(2);
@@ -39,6 +39,6 @@ public class MainPresenter implements MainContractPresenter {
 }
 
      public interface MainView {
-        void showData(List<MainListFragment.ClassRoom> data);
+        void showData(List<MainClassroomFragment.ClassRoom> data);
     }
 }

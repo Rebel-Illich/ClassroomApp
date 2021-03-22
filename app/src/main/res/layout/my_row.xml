@@ -15,49 +15,72 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:padding="10dp">
 
-            <TextView
-                android:id="@+id/class_id_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="40sp"
-                android:textStyle="bold"
-                android:textColor="#000"
+            <ImageButton
+                android:id="@+id/buttonEditClass"
+                android:layout_width="46dp"
+                android:layout_height="41dp"
+                android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/numberOfStudents"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:srcCompat="@drawable/ic_baseline_edit" />
 
             <TextView
                 android:id="@+id/class_name_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="50dp"
                 android:text="Class FourA"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:textColor="#000"
-                app:layout_constraintStart_toEndOf="@+id/class_id_txt"
-                app:layout_constraintTop_toTopOf="@+id/class_id_txt" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <TextView
+                android:id="@+id/labelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="160dp"
+                android:text="№"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
                 android:id="@+id/numberOfStudents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Number of Students 32"
-                app:layout_constraintStart_toStartOf="@+id/class_name_txt"
-                app:layout_constraintTop_toBottomOf="@+id/class_name_txt" />
+                android:layout_marginStart="200dp"
+                android:text="Number of St"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
-                android:id="@+id/room_number"
+                android:id="@+id/class_id_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Room 332"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginStart="15dp"
+                android:text="1"
+                android:textColor="#000"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

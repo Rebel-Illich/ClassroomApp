@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyClassRoomMap">
         <activity
-            android:name=".view.ControllerActivity"
+            android:name=".view.mainPageClassroom.MainClassroomActivity"
             android:label="Class Room Map">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

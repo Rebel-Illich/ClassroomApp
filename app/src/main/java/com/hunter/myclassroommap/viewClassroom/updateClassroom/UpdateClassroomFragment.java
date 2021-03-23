@@ -29,14 +29,11 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
 
     private MainClassroomActivity.WorksWithAdd worksWithAdd;
     private ProgressDialog progressDialog;
-    private Integer currentClassId;
     private EditText nameUpdate;
     private EditText roomUpdate;
     private EditText floorUpdate;
     private EditText countOfStudentsUpdate;
     Button updateButton, deleteButton;
-    private String id, name, room, floor, countOfStudents;
-    private String row_id;
     private ClassRoom classRoom;
 
     public static UpdateClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
@@ -66,8 +63,6 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         updateButton = view.findViewById(R.id.update_button);
         deleteButton = view.findViewById(R.id.delete_button);
 
-        getAndSetIntentData();
-        
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +94,12 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
                 },2000);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getAndSetIntentData();
     }
 
     private void getAndSetIntentData() {

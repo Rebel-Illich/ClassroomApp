@@ -13,7 +13,6 @@ import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
-import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainClassroomFragment;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
 
 public class MainClassroomActivity extends AppCompatActivity{

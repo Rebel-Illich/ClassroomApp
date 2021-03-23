@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
+package com.hunter.myclassroommap.viewClassroom.classRoomInfo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

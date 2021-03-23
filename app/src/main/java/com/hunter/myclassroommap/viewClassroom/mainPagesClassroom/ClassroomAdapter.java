@@ -43,7 +43,6 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
         ClassRoom item = classRoomList.get(position);
         holder.class_id_txt.setText(String.valueOf(item.getId()));
         holder.class_name.setText(String.valueOf(item.getClassroomName()));
-//      holder.room_number.setText(String.valueOf(item.class_roomnumber));
         holder.numberOfStudents.setText(String.valueOf(item.getNumberOfStudents()));
 
         holder.editClassroom.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +80,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
             class_id_txt = itemView.findViewById(R.id.class_id_txt);
             class_name = itemView.findViewById(R.id.class_name_txt);
             numberOfStudents = itemView.findViewById(R.id.numberOfStudents);
+
             editClassroom = itemView.findViewById(R.id.buttonEditClass);
             mainLayout = itemView.findViewById(R.id.mainLayout);
 

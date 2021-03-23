@@ -8,6 +8,8 @@ public class ClassRoom {
     private long classroomFloor;
     private long numberOfStudents;
 
+    public ClassRoom() {
+    }
 
     public ClassRoom(String classroomName, long classroomRoomNumber, long classroomFloor, long numberOfStudents) {
         this.classroomName = classroomName;

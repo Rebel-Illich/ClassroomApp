@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainClassroom;
 
 import android.os.Bundle;
 
@@ -17,7 +17,10 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
-import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainPresenter;
+import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.ClassroomAdapter;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,11 +102,4 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
         classroomAdapter.notifyDataSetChanged();
     }
 
-    public static class ClassRoom {
-        public String class_id;
-        public String class_name;
-        public String class_floor;
-        public String class_roomnumber;
-        public String class_numberOfStudents;
-    }
 }

@@ -16,7 +16,7 @@ public class AddClassRoomPresenter implements AddClassRoomContract.Presenter {
     }
 
     @Override
-    public void addNewClassRoom(String classroomName, long classroomRoomNumber, long classroomFloor,  long numberOfStudents) {
+    public void addNewClassRoom(String classroomName, long classroomRoomNumber, long classroomFloor, long numberOfStudents) {
         new Thread(new Runnable() {
             @Override
             public void run() {

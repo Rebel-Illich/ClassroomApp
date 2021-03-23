@@ -9,7 +9,6 @@ public class UpdateClassroomPresenter implements UpdateClassroomContract.Present
 
     private final ClassroomRepository repository;
     UpdateClassroomContract.View view;
-    ClassRoom classRoom;
 
     public UpdateClassroomPresenter(UpdateClassroomContract.View view, Context context) {
         this.view = view;
@@ -17,11 +16,11 @@ public class UpdateClassroomPresenter implements UpdateClassroomContract.Present
     }
 
     @Override
-    public void editDataClassroom( String classroomName, int classroomRoomNumber, int classroomFloor, int numberOfStudents) {
+    public void editDataClassroom(ClassRoom classRoom) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                repository.updateData(new ClassRoom(classroomName, classroomRoomNumber, classroomFloor, numberOfStudents));
+                repository.updateData(classRoom);
 
                 view.onSuccess("Update Classroom!");
             }

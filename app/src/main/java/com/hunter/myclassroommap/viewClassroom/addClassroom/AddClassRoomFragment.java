@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
+package com.hunter.myclassroommap.viewClassroom.addClassroom;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -16,8 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomContract;
-import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomPresenter;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
@@ -103,7 +102,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
                     public void run() {
                         Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
-                        worksWithAdd.mainClass();
+                        worksWithAdd.returnBack();
                     }
                 },2000);
             }

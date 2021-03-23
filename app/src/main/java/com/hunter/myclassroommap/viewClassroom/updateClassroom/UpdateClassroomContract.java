@@ -1,5 +1,6 @@
 package com.hunter.myclassroommap.viewClassroom.updateClassroom;
 
+
 import com.hunter.myclassroommap.model.ClassRoom;
 
 public interface UpdateClassroomContract {
@@ -8,8 +9,8 @@ public interface UpdateClassroomContract {
         void onSuccess(String messageAlert);
     }
 
-    interface Presenter{
-        void editDataClassroom( String classroomName, int classroomRoomNumber, int classroomFloor, int numberOfStudents);
+    interface Presenter {
+        void editDataClassroom(ClassRoom classRoom);
     }
 
 }

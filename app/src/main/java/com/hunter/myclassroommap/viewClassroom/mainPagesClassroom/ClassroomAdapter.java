@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hunter.myclassroommap.R;
+import com.hunter.myclassroommap.model.ClassRoom;
 
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
 
     private MainClassroomActivity.WorksWithAdd worksWithAdd;
     private Context context;
-    private List<MainClassroomFragment.ClassRoom> classRoomList;
+    private List<ClassRoom> classRoomList;
 
-    public ClassroomAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<MainClassroomFragment.ClassRoom> classRoomList) {
+    public ClassroomAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<ClassRoom> classRoomList) {
         this.worksWithAdd = worksWithAdd;
         this.context = context;
         this.classRoomList = classRoomList;
@@ -39,21 +40,17 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        MainClassroomFragment.ClassRoom item = classRoomList.get(position);
-        holder.class_id_txt.setText(String.valueOf(item.class_id));
-        holder.class_name.setText(String.valueOf(item.class_name));
+        ClassRoom item = classRoomList.get(position);
+        holder.class_id_txt.setText(String.valueOf(item.getId()));
+        holder.class_name.setText(String.valueOf(item.getClassroomName()));
 //      holder.room_number.setText(String.valueOf(item.class_roomnumber));
-        holder.numberOfStudents.setText(String.valueOf(item.class_numberOfStudents));
+        holder.numberOfStudents.setText(String.valueOf(item.getNumberOfStudents()));
 
         holder.editClassroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 worksWithAdd.updateClass(
-                        String.valueOf(item.class_name),
-                        String.valueOf(item.class_floor),
-                        "",
-                        String.valueOf(item.class_roomnumber),
-                        String.valueOf(item.class_numberOfStudents)
+                        item
                 );
             }
         });

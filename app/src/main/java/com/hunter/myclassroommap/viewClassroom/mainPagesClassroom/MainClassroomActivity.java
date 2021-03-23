@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
+import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
+import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainClassroomFragment;
+import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
 
 public class MainClassroomActivity extends AppCompatActivity{
 
@@ -37,7 +41,7 @@ public class MainClassroomActivity extends AppCompatActivity{
             super();
         }
 
-        void addClass(){
+        public void addClass(){
             if (addClassRoomFragment == null) {
                 addClassRoomFragment = AddClassRoomFragment.newInstance(worksWithAdd);
             }
@@ -47,21 +51,26 @@ public class MainClassroomActivity extends AppCompatActivity{
                    .commit();
         }
 
-        void updateClass(String id, String name, String floor, String room, String countOfStudent){
-            if (updateClassroomFragment == null) {
-                updateClassroomFragment = UpdateClassroomFragment.newInstance(worksWithAdd);
-            }
-            updateClassroomFragment.setData(id, name, floor, room, countOfStudent);
 
+        public void mainClass() {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, updateClassroomFragment)
+                .replace(R.id.main_container, mainClassroomFragment)
                 .addToBackStack(null)
                 .commit();
         }
 
-        void mainClass() {
+        public void returnBack() {
+            getSupportFragmentManager().popBackStack();
+        }
+
+        public void updateClass(ClassRoom item) {
+            if (updateClassroomFragment == null) {
+                updateClassroomFragment = UpdateClassroomFragment.newInstance(worksWithAdd);
+            }
+            updateClassroomFragment.setData(item);
+
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainClassroomFragment)
+                .replace(R.id.main_container, updateClassroomFragment)
                 .addToBackStack(null)
                 .commit();
         }

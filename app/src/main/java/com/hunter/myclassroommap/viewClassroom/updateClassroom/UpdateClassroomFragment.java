@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
+package com.hunter.myclassroommap.viewClassroom.updateClassroom;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,8 +20,7 @@ import android.widget.Toast;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomContract;
-import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomPresenter;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
 
 public class UpdateClassroomFragment extends Fragment implements UpdateClassroomContract.View {
@@ -37,6 +36,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     private EditText countOfStudentsUpdate;
     Button updateButton, deleteButton;
     private String id, name, room, floor, countOfStudents;
+    private String row_id;
+    private ClassRoom classRoom;
 
     public static UpdateClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
         UpdateClassroomFragment instance =  new UpdateClassroomFragment();
@@ -71,8 +72,6 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
             @Override
             public void onClick(View view) {
                 classroomUpdateFields();
-
-                progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
             }
         });
 
@@ -95,19 +94,18 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
                     public void run() {
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_LONG).show();
-                        worksWithAdd.mainClass();
+                        worksWithAdd.returnBack();
                     }
                 },2000);
             }
         });
     }
 
-    private void getAndSetIntentData(){
-        currentClassId = getActivity().getIntent().getIntExtra("classroomId",0);
-        nameUpdate.setText(String.valueOf(getActivity().getIntent().getStringExtra("classroomName")));
-        roomUpdate.setText(String.valueOf(getActivity().getIntent().getIntExtra("classroomRoom",0)));
-        floorUpdate.setText(String.valueOf(getActivity().getIntent().getIntExtra("classroomFloor",0)));
-        countOfStudentsUpdate.setText(String.valueOf(getActivity().getIntent().getIntExtra("countOfStudents",0)));
+    private void getAndSetIntentData() {
+        nameUpdate.setText(classRoom.getClassroomName());
+        roomUpdate.setText(String.valueOf(classRoom.getClassroomRoomNumber()));
+        floorUpdate.setText(String.valueOf(classRoom.getClassroomFloor()));
+        countOfStudentsUpdate.setText(String.valueOf(classRoom.getNumberOfStudents()));
     }
 
     public void classroomUpdateFields() {
@@ -120,23 +118,30 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         } else if (countOfStudentsUpdate.getText().toString().length() == 0) {
             countOfStudentsUpdate.setError("The Four line is not filled!");
         } else {
-            String classroomName = String.valueOf(nameUpdate.getText());
-            int classroomRoomNumber = Integer.parseInt(countOfStudentsUpdate.getText().toString());
-            int classroomFloor = Integer.parseInt(floorUpdate.getText().toString());
-            int numberOfStudents = Integer.parseInt(countOfStudentsUpdate.getText().toString());
-            editClassroomPresenter.editDataClassroom( classroomName,  classroomRoomNumber,  classroomFloor,  numberOfStudents);
+            try{
+            classRoom.setClassroomName(nameUpdate.getText().toString());
+            classRoom.setNumberOfStudents(Long.parseLong(countOfStudentsUpdate.getText().toString()));
+            classRoom.setClassroomFloor(Long.parseLong(floorUpdate.getText().toString()));
+            classRoom.setClassroomRoomNumber(Long.parseLong(roomUpdate.getText().toString()));
+
+            editClassroomPresenter.editDataClassroom(classRoom);
+
+                progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
+            } catch(NumberFormatException ex){
+                Toast.makeText(getActivity(), "Do not write long numbers!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     public void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete " + nameUpdate + " ?");
-        builder.setMessage("Are you sure you want to delete " + nameUpdate + " ?");
+        builder.setMessage("Are you sure you want to delete " + nameUpdate.getText().toString() + " ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ClassroomRepository classroomRepository = new ClassroomRepository(getActivity());
-                classroomRepository.deleteOneRow(id);
+                classroomRepository.deleteOneRow(classRoom.getId());
                 worksWithAdd.mainClass();
             }
         });
@@ -148,11 +153,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         builder.create().show();
     }
 
-    public void setData(String id, String name, String floor, String room, String countOfStudent) {
-        this.id = id;
-        this.name = name;
-        this.room = room;
-        this.floor = floor;
-        this.countOfStudents = countOfStudent;
+    public void setData(ClassRoom item) {
+        this.classRoom = item;
     }
 }

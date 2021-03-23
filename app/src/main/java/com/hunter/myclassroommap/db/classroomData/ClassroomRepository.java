@@ -5,12 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.hunter.myclassroommap.model.ClassRoom;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClassroomRepository {
 
@@ -32,8 +28,8 @@ public class ClassroomRepository {
 
     private Cursor getAllEntries() {
         String[] columns = new String[]{ClassroomDatabase.COLUMN_ID, ClassroomDatabase.COLUMN_NAME,
-                ClassroomDatabase.COLUMN_ROOMNUMBER, ClassroomDatabase.COLUMN_FLOOR,
-                ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS};
+            ClassroomDatabase.COLUMN_ROOMNUMBER, ClassroomDatabase.COLUMN_FLOOR,
+            ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS};
         return database.query(ClassroomDatabase.TABLE_NAME, columns, null, null, null, null, null);
     }
 
@@ -89,9 +85,9 @@ public class ClassroomRepository {
         return cursor;
     }
 
-    public void deleteOneRow(String row_id) {
+    public void deleteOneRow(long row_id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long result = db.delete(dbHelper.TABLE_NAME, "ID=?", new String[]{row_id});
+        long result = db.delete(dbHelper.TABLE_NAME, "ID=?", new String[]{String.valueOf(row_id)});
     }
 
     public void deleteAllData() {
@@ -114,11 +110,11 @@ public class ClassroomRepository {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(ClassroomDatabase.COLUMN_NAME,  classRoom.getClassroomName());
+        cv.put(ClassroomDatabase.COLUMN_NAME, classRoom.getClassroomName());
         cv.put(ClassroomDatabase.COLUMN_ROOMNUMBER, classRoom.getClassroomRoomNumber());
         cv.put(ClassroomDatabase.COLUMN_FLOOR, classRoom.getClassroomFloor());
         cv.put(ClassroomDatabase.COLUMN_NUMBEROFSTUDENTS, classRoom.getNumberOfStudents());
 
-        return db.update(ClassroomDatabase.TABLE_NAME, cv ,ClassroomDatabase.COLUMN_ID + " = " +  classRoom.getId(),null);
+        return db.update(ClassroomDatabase.TABLE_NAME, cv, "ID=?",  new String[]{ String.valueOf(classRoom.getId()) });
     }
 }

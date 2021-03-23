@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".viewClassroom.mainPagesClassroom.MainClassroomActivity"
+    tools:context=".viewClassroom.mainClassroomActivity.MainClassroomActivity"
     android:padding="30dp">
 
     <TextView
@@ -30,6 +30,7 @@
         android:ems="10"
         android:hint="Name of Class"
         android:inputType="text"
+        android:maxLength="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelTextView" />
@@ -42,6 +43,7 @@
         android:ems="10"
         android:hint="Room Number"
         android:inputType="number"
+        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_input" />
@@ -54,6 +56,7 @@
         android:ems="10"
         android:hint="Floor Number"
         android:inputType="number"
+        android:maxLength="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/room_input" />
@@ -66,6 +69,7 @@
         android:ems="10"
         android:hint="Number of Students"
         android:inputType="number"
+        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/floor_input" />

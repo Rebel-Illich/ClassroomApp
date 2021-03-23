@@ -9,10 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.classRoomInfo.ClassRoomDetailsContract;
-import com.hunter.myclassroommap.viewClassroom.classRoomInfo.ClassRoomDetailsPresenter;
 
 public class ClassroomDetailsFragment  implements ClassRoomDetailsContract {
 

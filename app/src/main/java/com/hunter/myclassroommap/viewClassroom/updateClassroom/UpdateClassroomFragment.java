@@ -20,14 +20,14 @@ import android.widget.Toast;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
+import com.hunter.myclassroommap.viewClassroom.mainClassroomActivity.MainClassroomActivity;
 
 
 public class UpdateClassroomFragment extends Fragment implements UpdateClassroomContract.View {
 
     private UpdateClassroomContract.Presenter editClassroomPresenter;
 
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private MainClassroomActivity.ControllerFragments controllerFragments;
     private ProgressDialog progressDialog;
     private EditText nameUpdate;
     private EditText roomUpdate;
@@ -36,9 +36,9 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     Button updateButton, deleteButton;
     private ClassRoom classRoom;
 
-    public static UpdateClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
-        UpdateClassroomFragment instance =  new UpdateClassroomFragment();
-        instance.worksWithAdd = worksWithAdd;
+    public static UpdateClassroomFragment newInstance(MainClassroomActivity.ControllerFragments controllerFragments) {
+        UpdateClassroomFragment instance = new UpdateClassroomFragment();
+        instance.controllerFragments = controllerFragments;
         return instance;
     }
 
@@ -53,7 +53,6 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         editClassroomPresenter = new UpdateClassroomPresenter(this, view.getContext());
 
         nameUpdate = view.findViewById(R.id.name_input2);
@@ -62,6 +61,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         countOfStudentsUpdate = view.findViewById(R.id.countOfStudents_input2);
         updateButton = view.findViewById(R.id.update_button);
         deleteButton = view.findViewById(R.id.delete_button);
+
+        getAndSetIntentData();
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,17 +90,11 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
                     public void run() {
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_LONG).show();
-                        worksWithAdd.returnBack();
+                        requireActivity().getSupportFragmentManager().popBackStack();
                     }
-                },2000);
+                }, 2000);
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getAndSetIntentData();
     }
 
     private void getAndSetIntentData() {
@@ -119,22 +114,22 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         } else if (countOfStudentsUpdate.getText().toString().length() == 0) {
             countOfStudentsUpdate.setError("The Four line is not filled!");
         } else {
-            try{
-            classRoom.setClassroomName(nameUpdate.getText().toString());
-            classRoom.setNumberOfStudents(Long.parseLong(countOfStudentsUpdate.getText().toString()));
-            classRoom.setClassroomFloor(Long.parseLong(floorUpdate.getText().toString()));
-            classRoom.setClassroomRoomNumber(Long.parseLong(roomUpdate.getText().toString()));
+            try {
+                classRoom.setClassroomName(nameUpdate.getText().toString());
+                classRoom.setNumberOfStudents(Long.parseLong(countOfStudentsUpdate.getText().toString()));
+                classRoom.setClassroomFloor(Long.parseLong(floorUpdate.getText().toString()));
+                classRoom.setClassroomRoomNumber(Long.parseLong(roomUpdate.getText().toString()));
 
-            editClassroomPresenter.editDataClassroom(classRoom);
+                editClassroomPresenter.editDataClassroom(classRoom);
 
-                progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
-            } catch(NumberFormatException ex){
-                Toast.makeText(getActivity(), "Do not write long numbers!", Toast.LENGTH_SHORT).show();
+                progressDialog = ProgressDialog.show(getActivity(), "Updating Classroom", "updating...");
+            } catch (NumberFormatException ex) {
+                Toast.makeText(getActivity(), "Format is not correct!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void confirmDialog(){
+    public void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete " + nameUpdate + " ?");
         builder.setMessage("Are you sure you want to delete " + nameUpdate.getText().toString() + " ?");
@@ -143,7 +138,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
             public void onClick(DialogInterface dialogInterface, int i) {
                 ClassroomRepository classroomRepository = new ClassroomRepository(getActivity());
                 classroomRepository.deleteOneRow(classRoom.getId());
-                worksWithAdd.mainClass();
+                requireActivity().onBackPressed();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

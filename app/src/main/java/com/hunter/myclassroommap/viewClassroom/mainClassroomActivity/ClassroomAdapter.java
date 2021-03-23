@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainClassroomActivity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,12 +20,12 @@ import java.util.List;
 
 public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyViewHolder> {
 
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private MainClassroomActivity.ControllerFragments controllerFragments;
     private Context context;
     private List<ClassRoom> classRoomList;
 
-    public ClassroomAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<ClassRoom> classRoomList) {
-        this.worksWithAdd = worksWithAdd;
+    public ClassroomAdapter(MainClassroomActivity.ControllerFragments controllerFragments, Context context, List<ClassRoom> classRoomList) {
+        this.controllerFragments = controllerFragments;
         this.context = context;
         this.classRoomList = classRoomList;
     }
@@ -41,14 +41,14 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ClassRoom item = classRoomList.get(position);
-        holder.class_id_txt.setText(String.valueOf(item.getId()));
-        holder.class_name.setText(String.valueOf(item.getClassroomName()));
+        holder.classId.setText(String.valueOf(item.getId()));
+        holder.className.setText(String.valueOf(item.getClassroomName()));
         holder.numberOfStudents.setText(String.valueOf(item.getNumberOfStudents()));
 
         holder.editClassroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                worksWithAdd.updateClass(
+                controllerFragments.updateClass(
                         item
                 );
             }
@@ -72,13 +72,13 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageButton editClassroom;
-        TextView class_id_txt, class_name, numberOfStudents, room_number;
+        TextView classId, className, numberOfStudents, roomNumber;
         LinearLayout mainLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            class_id_txt = itemView.findViewById(R.id.class_id_txt);
-            class_name = itemView.findViewById(R.id.class_name_txt);
+            classId = itemView.findViewById(R.id.class_id_txt);
+            className = itemView.findViewById(R.id.class_name_txt);
             numberOfStudents = itemView.findViewById(R.id.numberOfStudents);
 
             editClassroom = itemView.findViewById(R.id.buttonEditClass);

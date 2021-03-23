@@ -19,8 +19,8 @@ import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.ClassroomAdapter;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
+import com.hunter.myclassroommap.viewClassroom.mainClassroomActivity.ClassroomAdapter;
+import com.hunter.myclassroommap.viewClassroom.mainClassroomActivity.MainClassroomActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +28,21 @@ import java.util.List;
 
 
 public class MainClassroomFragment extends Fragment implements MainPresenter.MainView {
-    private AddClassRoomFragment addClassRoomFragment;
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+
+    private MainClassroomActivity.ControllerFragments controllerFragments;
 
     private MainPresenter presenter;
 
-    FloatingActionButton add_button;
+    FloatingActionButton addButton;
     RecyclerView recyclerView;
-    ImageView empty_imageView;
-    TextView no_data;
+    ImageView emptyImageView;
+    TextView noData;
     List<ClassRoom> dataList = new ArrayList<>();
     ClassroomAdapter classroomAdapter;
 
-    public static MainClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
+    public static MainClassroomFragment newInstance(MainClassroomActivity.ControllerFragments controllerFragments) {
         MainClassroomFragment instance =  new MainClassroomFragment();
-        instance.worksWithAdd = worksWithAdd;
+        instance.controllerFragments = controllerFragments;
         return instance;
     }
 
@@ -61,17 +61,17 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
         presenter = new MainPresenter(new ClassroomRepository(requireContext()), this);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        add_button = view.findViewById(R.id.add_button);
-        empty_imageView = view.findViewById(R.id.empty_imageview);
-        no_data = view.findViewById(R.id.no_data);
-        add_button.setOnClickListener(new View.OnClickListener() {
+        addButton = view.findViewById(R.id.add_button);
+        emptyImageView = view.findViewById(R.id.empty_imageview);
+        noData = view.findViewById(R.id.no_data);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                worksWithAdd.addClass();
+                controllerFragments.addClass();
             }
         });
 
-        classroomAdapter = new ClassroomAdapter(worksWithAdd, getContext(), dataList);
+        classroomAdapter = new ClassroomAdapter(controllerFragments, getContext(), dataList);
         recyclerView.setAdapter(classroomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -91,15 +91,14 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
     @Override
     public void showData(List<ClassRoom> data) {
         if (data.isEmpty()) {
-            empty_imageView.setVisibility(View.VISIBLE);
-            no_data.setVisibility(View.VISIBLE);
+            emptyImageView.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.VISIBLE);
         } else  {
-            empty_imageView.setVisibility(View.GONE);
-            no_data.setVisibility(View.GONE);
+            emptyImageView.setVisibility(View.GONE);
+            noData.setVisibility(View.GONE);
         }
         dataList.clear();
         dataList.addAll(data);
         classroomAdapter.notifyDataSetChanged();
     }
-
 }

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyClassRoomMap">
         <activity
-            android:name=".viewClassroom.mainPagesClassroom.MainClassroomActivity"
+            android:name=".viewClassroom.mainClassroomActivity.MainClassroomActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:label="Class Room Map">
             <intent-filter>

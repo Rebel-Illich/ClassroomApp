@@ -1,4 +1,4 @@
-package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
+package com.hunter.myclassroommap.viewClassroom.mainClassroomActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,14 +13,14 @@ import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
+import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainClassroomFragment;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
 
-public class MainClassroomActivity extends AppCompatActivity{
+public class MainClassroomActivity extends AppCompatActivity {
 
     private AddClassRoomFragment addClassRoomFragment;
     private MainClassroomFragment mainClassroomFragment;
-    private UpdateClassroomFragment updateClassroomFragment;
-    private WorksWithAdd worksWithAdd;
+    private ControllerFragments controllerFragments;
     private ClassroomRepository classroomRepository;
 
     @Override
@@ -28,50 +28,43 @@ public class MainClassroomActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.controller_activity);
 
-        worksWithAdd= new WorksWithAdd();
+        controllerFragments = new ControllerFragments();
 
-        mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
+        mainClassroomFragment = MainClassroomFragment.newInstance(controllerFragments);
 
-        worksWithAdd.mainClass();
+        controllerFragments.mainClass();
     }
 
-    public class WorksWithAdd{
-        public WorksWithAdd() {
+    public class ControllerFragments {
+        public ControllerFragments() {
             super();
         }
 
-        public void addClass(){
+        public void addClass() {
             if (addClassRoomFragment == null) {
-                addClassRoomFragment = AddClassRoomFragment.newInstance(worksWithAdd);
+                addClassRoomFragment = AddClassRoomFragment.newInstance(controllerFragments);
             }
-               getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, addClassRoomFragment)
-                   .addToBackStack(null)
-                   .commit();
+                    .addToBackStack(null)
+                    .commit();
         }
-
 
         public void mainClass() {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainClassroomFragment)
-                .addToBackStack(null)
-                .commit();
-        }
-
-        public void returnBack() {
-            getSupportFragmentManager().popBackStack();
+                    .replace(R.id.main_container, mainClassroomFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
 
         public void updateClass(ClassRoom item) {
-            if (updateClassroomFragment == null) {
-                updateClassroomFragment = UpdateClassroomFragment.newInstance(worksWithAdd);
-            }
+            UpdateClassroomFragment updateClassroomFragment = UpdateClassroomFragment.newInstance(controllerFragments);
             updateClassroomFragment.setData(item);
 
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, updateClassroomFragment)
-                .addToBackStack(null)
-                .commit();
+                    .replace(R.id.main_container, updateClassroomFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 
@@ -84,13 +77,13 @@ public class MainClassroomActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.delete_all){
+        if (item.getItemId() == R.id.delete_all) {
             confirmDialog();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    void confirmDialog(){
+    void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all Data?");
@@ -100,10 +93,10 @@ public class MainClassroomActivity extends AppCompatActivity{
                 classroomRepository = new ClassroomRepository(MainClassroomActivity.this);
                 classroomRepository.deleteAllData();
 
-                  // Refresh Fragment
-                mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
+                // Refresh Fragment
+                mainClassroomFragment = MainClassroomFragment.newInstance(controllerFragments);
 
-                worksWithAdd.mainClass();
+                controllerFragments.mainClass();
             }
         });
 

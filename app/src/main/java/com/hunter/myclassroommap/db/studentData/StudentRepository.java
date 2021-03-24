@@ -9,7 +9,6 @@ import com.hunter.myclassroommap.model.Student;
 import java.util.ArrayList;
 
 public class StudentRepository   {
-
     private DatabaseStudent dataBaseStudent;
     private SQLiteDatabase sqLiteDatabase;
     private ArrayList<Student> studentModelArrayList;

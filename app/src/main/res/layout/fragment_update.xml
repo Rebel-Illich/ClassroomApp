@@ -31,7 +31,6 @@
         android:ems="10"
         android:hint="Class Of Students"
         android:inputType="textPersonName"
-        android:maxLength="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +42,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Room Number"
-        android:inputType="number"
-        android:maxLength="4"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_input2" />
@@ -57,7 +55,6 @@
         android:ems="10"
         android:hint="Floor Number"
         android:inputType="number"
-        android:maxLength="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/room_input2" />
@@ -70,7 +67,6 @@
         android:ems="10"
         android:hint="Count Of Students"
         android:inputType="number"
-        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/floor_input2" />

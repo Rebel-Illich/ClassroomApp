@@ -16,20 +16,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.viewClassroom.mainClassroomActivity.MainClassroomActivity;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 
     private ProgressDialog progressDialog;
-    private MainClassroomActivity.ControllerFragments controllerFragments;
+    private MainClassroomActivity.WorksWithAdd worksWithAdd;
     private AddClassRoomContract.Presenter addPresenter;
     private EditText nameAddInput, roomAddInput, floorAddInput, countOfStudentsAddInput;
-    private Button addButton;
+    private Button add_button;
 
-    public static AddClassRoomFragment newInstance(MainClassroomActivity.ControllerFragments worksWithAdd) {
+    public static AddClassRoomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
         AddClassRoomFragment instance =  new AddClassRoomFragment();
-        instance.controllerFragments = worksWithAdd;
+        instance.worksWithAdd = worksWithAdd;
         return instance;
     }
 
@@ -56,8 +56,8 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
         roomAddInput = view.findViewById(R.id.room_input);
         floorAddInput = view.findViewById(R.id.floor_input);
         countOfStudentsAddInput = view.findViewById(R.id.countOfStudents);
-        addButton = view.findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        add_button = view.findViewById(R.id.add_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addEditFields();
@@ -86,7 +86,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
                 progressDialog = ProgressDialog.show(getActivity(),"Adding new Classroom","loading...");
 
             } catch(NumberFormatException ex){
-                Toast.makeText(getActivity(), "Format is not correct !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Do not write long numbers!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -102,7 +102,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
                     public void run() {
                         Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
-                        requireActivity().onBackPressed();
+                        worksWithAdd.returnBack();
                     }
                 },2000);
             }

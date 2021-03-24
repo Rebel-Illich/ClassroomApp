@@ -67,21 +67,21 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
       //  studentPresenter = new StudentPresenter(new ClassroomRepository(requireContext()), this);
         recyclerViewStudents = view.findViewById(R.id.recyclerViewStudents);
 
-        floatingActionButton = view.findViewById(R.id.add_student_button);
+        floatingActionButton = view.findViewById(R.id.floatingActionButtonStudents);
 //        empty_imageView = view.findViewById(R.id.empty_imageview);
 //        no_data = view.findViewById(R.id.no_data);
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//        //        worksWithAdd.addClass();
-//            }
-//        });
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                worksWithAdd.addStudent();
+            }
+        });
 
 
      //   studentAdapter = new StudentAdapter(worksWithAdd, getContext(), dataList);
   //      recyclerViewStudents.setAdapter(StudentAdapter);
         classroomId = getActivity().getIntent().getIntExtra("classroomId",0);
-  //      studentAdapter = new StudentAdapter(getActivity().getApplicationContext(), studentPresenter.loadAllDataInRecyclerView(classroomId), recyclerViewStudents, this);
+    //    studentAdapter = new StudentAdapter(getActivity().getApplicationContext(), studentPresenter.loadAllDataInRecyclerView(classroomId), recyclerViewStudents, this);
         recyclerViewStudents.setAdapter(studentAdapter);
         recyclerViewStudents.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

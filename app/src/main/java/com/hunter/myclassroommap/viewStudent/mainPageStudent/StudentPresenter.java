@@ -13,7 +13,7 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
 
     public StudentPresenter(StudentAndClassContract.View view, Context context) {
         this.view = view;
-   //     this.studentRepository = new StudentRepository(context);
+//        this.studentRepository = new StudentRepository(context);
     }
 
     @Override

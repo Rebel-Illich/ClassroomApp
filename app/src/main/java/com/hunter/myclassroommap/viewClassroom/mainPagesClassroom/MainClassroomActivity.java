@@ -14,6 +14,7 @@ import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
+import com.hunter.myclassroommap.viewStudent.addStudents.AddStudentFragment;
 import com.hunter.myclassroommap.viewStudent.mainPageStudent.MainStudentFragment;
 
 public class MainClassroomActivity extends AppCompatActivity implements FragmentController {
@@ -21,6 +22,7 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
     private AddClassRoomFragment addClassRoomFragment;
     private MainClassroomFragment mainClassroomFragment;
     private UpdateClassroomFragment updateClassroomFragment;
+    private AddStudentFragment addStudentFragment;
     private MainStudentFragment mainStudentFragment;
     private WorksWithAdd worksWithAdd;
     private ClassroomRepository classroomRepository;
@@ -120,6 +122,16 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
             }
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, mainStudentFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        public void addStudent() {
+            if (addStudentFragment == null) {
+                addStudentFragment = AddStudentFragment.newInstance(worksWithAdd);
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, addStudentFragment)
                     .addToBackStack(null)
                     .commit();
         }

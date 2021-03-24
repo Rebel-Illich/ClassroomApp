@@ -15,16 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainPresenter;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.ClassroomAdapter;
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomFragment;
 
 import java.util.ArrayList;
 
-public class MainStudentFragment extends Fragment {
+public class MainStudentFragment extends Fragment implements StudentAndClassContract.View{
 
     private MainClassroomActivity.WorksWithAdd worksWithAdd;
 
@@ -56,8 +52,6 @@ public class MainStudentFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         classId = view.findViewById(R.id.student_id);
         currentClassName = view.findViewById(R.id.show_classroom_name);
         currentClassRoom = view.findViewById(R.id.room_number);
@@ -86,6 +80,9 @@ public class MainStudentFragment extends Fragment {
 
      //   studentAdapter = new StudentAdapter(worksWithAdd, getContext(), dataList);
   //      recyclerViewStudents.setAdapter(StudentAdapter);
+        classroomId = getActivity().getIntent().getIntExtra("classroomId",0);
+  //      studentAdapter = new StudentAdapter(getActivity().getApplicationContext(), studentPresenter.loadAllDataInRecyclerView(classroomId), recyclerViewStudents, this);
+        recyclerViewStudents.setAdapter(studentAdapter);
         recyclerViewStudents.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -97,4 +94,8 @@ public class MainStudentFragment extends Fragment {
     }
 
 
+    @Override
+    public void onSuccess(String messageAlert) {
+
+    }
 }

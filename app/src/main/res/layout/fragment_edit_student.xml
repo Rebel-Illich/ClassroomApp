@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
     <TextView
         android:id="@+id/labelTextView"
         android:layout_width="196dp"
         android:layout_height="37dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="40dp"
         android:text="Edit Student"
         android:textAlignment="center"
         android:textSize="20dp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/edit_firstName_student"
         android:layout_width="214dp"
         android:layout_height="40dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="First name"
         android:inputType="textPersonName"
@@ -32,35 +32,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/labelTextView" />
 
-      <EditText
+
+    <EditText
         android:id="@+id/edit_secondName_student"
         android:layout_width="212dp"
         android:layout_height="40dp"
-        android:layout_marginTop="236dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Second name"
         android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/edit_firstName_student" />
 
 
     <Spinner
         android:id="@+id/edit_gender_studentSpinner"
         android:layout_width="208dp"
         android:layout_height="36dp"
-        android:background="#F4F0E3"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.736" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        app:layout_constraintVertical_bias="0.073" />
 
     <TextView
         android:id="@+id/textView13"
@@ -73,9 +73,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.663" />
-
+        app:layout_constraintTop_toBottomOf="@+id/edit_age_student"
+        app:layout_constraintVertical_bias="0.08" />
 
     <EditText
         android:id="@+id/edit_middleName_student"
@@ -89,8 +88,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.471" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_secondName_student"
+        app:layout_constraintVertical_bias="0.082" />
 
     <EditText
         android:id="@+id/edit_age_student"
@@ -102,23 +101,36 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.593" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_middleName_student"
+        app:layout_constraintVertical_bias="0.117" />
 
     <Button
         android:id="@+id/editStudentButton"
-        android:layout_width="216dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="208dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="39dp"
         android:text="Update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.866" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_gender_studentSpinner"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="213dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:text="Delete"
+        android:textAllCaps="false"
+        android:textColor="#E46C64"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/editStudentButton"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="98dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

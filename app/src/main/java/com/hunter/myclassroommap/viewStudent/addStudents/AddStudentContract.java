@@ -8,7 +8,7 @@ public interface AddStudentContract {
     }
 
     interface Presenter{
-        void addButtonClicked(String name, String lastName, String middleName, String gender, int age, int position);
+        void addButtonClicked(String firstName, String lastName, String middleName, String gender, int age, int position);
     }
 
     interface Repository{

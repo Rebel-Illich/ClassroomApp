@@ -72,6 +72,31 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
     }
 
     @Override
+    public void mainStudent(ClassRoom item) {
+        if (mainStudentFragment == null) {
+            mainStudentFragment = MainStudentFragment.newInstance(worksWithAdd);
+        }
+
+        mainStudentFragment.setData(item);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, mainStudentFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void addStudent() {
+        if (addStudentFragment == null) {
+            addStudentFragment = AddStudentFragment.newInstance(worksWithAdd);
+        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, addStudentFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
     public void returnBack() {
         getSupportFragmentManager().popBackStack();
     }
@@ -116,10 +141,13 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
                 .commit();
         }
 
-        public void mainStudent() {
+        public void mainStudent(ClassRoom item) {
             if (mainStudentFragment == null) {
                 mainStudentFragment = MainStudentFragment.newInstance(worksWithAdd);
             }
+
+            mainStudentFragment.setData(item);
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, mainStudentFragment)
                     .addToBackStack(null)

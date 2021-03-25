@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.model.Student;
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
 import java.util.ArrayList;
@@ -29,10 +30,9 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     private StudentAdapter studentAdapter;
     private StudentPresenter studentPresenter;
     private RecyclerView recyclerViewStudents;
-    private Integer classroomId;
-    private ProgressDialog progressDialog;
-    private ArrayList<ClassRoom> currentClassModel = new ArrayList<ClassRoom>();
+    private ArrayList<Student> currentClassModel = new ArrayList<>();
     private ClassRoom classRoom;
+    private Integer classroomId;
 
     public static MainStudentFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
         MainStudentFragment instance =  new MainStudentFragment();
@@ -43,7 +43,7 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_show_class, container, false);
         return view;
     }
@@ -61,15 +61,9 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         recyclerViewStudents = view.findViewById(R.id.recyclerViewStudents);
         recyclerViewStudents.setHasFixedSize(true);
 
-
-      //  getInfoAboutCurrClassroom();
-
-      //  studentPresenter = new StudentPresenter(new ClassroomRepository(requireContext()), this);
         recyclerViewStudents = view.findViewById(R.id.recyclerViewStudents);
 
         floatingActionButton = view.findViewById(R.id.floatingActionButtonStudents);
-//        empty_imageView = view.findViewById(R.id.empty_imageview);
-//        no_data = view.findViewById(R.id.no_data);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,13 +71,13 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
             }
         });
 
-
-     //   studentAdapter = new StudentAdapter(worksWithAdd, getContext(), dataList);
-  //      recyclerViewStudents.setAdapter(StudentAdapter);
+        studentPresenter = new StudentPresenter( this, getActivity().getApplicationContext());
         classroomId = getActivity().getIntent().getIntExtra("classroomId",0);
-    //    studentAdapter = new StudentAdapter(getActivity().getApplicationContext(), studentPresenter.loadAllDataInRecyclerView(classroomId), recyclerViewStudents, this);
+        studentAdapter = new StudentAdapter(getActivity().getApplicationContext(), studentPresenter.loadAllData(classroomId), recyclerViewStudents);
         recyclerViewStudents.setAdapter(studentAdapter);
-        recyclerViewStudents.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewStudents.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        getInfoAboutCurrClassroom();
     }
 
     private void getInfoAboutCurrClassroom() {
@@ -93,9 +87,18 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         currentClassStudents.setText(String.valueOf(classRoom.getNumberOfStudents()));
     }
 
-
     @Override
     public void onSuccess(String messageAlert) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getInfoAboutCurrClassroom();
+    }
+
+    public void setData(ClassRoom item) {
+        this.classRoom = item;
     }
 }

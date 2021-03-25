@@ -97,7 +97,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
                     public void run() {
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_LONG).show();
-                        worksWithAdd.returnBack();
+                        requireActivity().onBackPressed();
                     }
                 },2000);
             }

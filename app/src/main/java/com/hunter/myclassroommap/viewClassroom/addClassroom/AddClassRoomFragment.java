@@ -102,7 +102,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
                     public void run() {
                         Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
-                        worksWithAdd.returnBack();
+                        requireActivity().onBackPressed();
                     }
                 },2000);
             }

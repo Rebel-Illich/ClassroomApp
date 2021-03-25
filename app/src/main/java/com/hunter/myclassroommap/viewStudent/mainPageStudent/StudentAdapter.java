@@ -9,11 +9,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hunter.myclassroommap.R;
+import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
@@ -21,8 +25,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
     private Context context;
     private RecyclerView recyclerView;
     private List<Student> studentModelList;
+    private MainClassroomActivity.WorksWithAdd worksWithAdd;
     Integer positionIdStudent = 0;
-
 
     public StudentAdapter(Context context, List<Student> studentModelList, RecyclerView recyclerView) {
         this.context = context;
@@ -51,9 +55,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.deleteStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                positionIdStudent = studentModel.getStudentId();
-                //        callBackPosition.deleteStudentGetPosition(positionIdStudent);
-                studentModelList.remove(position);
             }
         });
 
@@ -84,7 +85,5 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         }
     }
     public void passDataToEditStudentInfo(Student studentModel){
-
     }
-
 }

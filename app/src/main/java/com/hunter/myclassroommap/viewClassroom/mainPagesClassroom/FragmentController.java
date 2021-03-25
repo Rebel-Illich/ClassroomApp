@@ -6,5 +6,7 @@ public interface FragmentController {
     void mainClass();
     void addClass();
     void updateClass(ClassRoom item);
+    void mainStudent(ClassRoom item);
+    void addStudent();
     void returnBack();
 }

@@ -10,14 +10,12 @@ public interface StudentAndClassContract {
     }
 
     interface Presenter{
-        List<Student> loadAllDataInRecyclerView(int position);
+        List<Student> loadAllData(int position);
 
-        void alertToDeleteClass(int position);
     }
 
     interface Repository{
         List<Student> getStudentsFromCurrentClass(int classroomId);
 
-        void deleteStudentFromClass(int position);
     }
 }

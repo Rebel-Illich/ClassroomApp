@@ -59,7 +59,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                worksWithAdd.mainStudent();
+                worksWithAdd.mainStudent(item);
             }
         });
     }

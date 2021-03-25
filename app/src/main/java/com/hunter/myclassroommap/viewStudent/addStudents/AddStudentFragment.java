@@ -1,13 +1,16 @@
 package com.hunter.myclassroommap.viewStudent.addStudents;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,13 +74,55 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         addStudentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addStudentFields();
             }
         });
 
 
     }
+
+    private void addStudentFields() {
+        if (firstNameStudent.getText().toString().length() == 0) {
+            firstNameStudent.setError("The First line is not filled!");
+        } else if (lastNameStudent.getText().toString().length() == 0) {
+            lastNameStudent.setError("The Second line is not filled!");
+        } else if (middleNameStudent.getText().toString().length() == 0) {
+            middleNameStudent.setError("The Third line is not filled!");
+        } else if(ageStudent.getText().toString().length() == 0){
+            ageStudent.setError("The Four line is not filled!");
+        } else {
+            try{
+                String firstName = firstNameStudent.getText().toString().trim();
+                String lastName = lastNameStudent.getText().toString().trim();
+                String middleName = middleNameStudent.getText().toString().trim();
+                String gender = genderSpinner.getSelectedItem().toString();
+                int age = Integer.parseInt(ageStudent.getText().toString());
+
+                addStudentPresenter.addButtonClicked(firstName, lastName, middleName, gender, age, positionClass);
+
+                progressDialog = ProgressDialog.show(getActivity(),"Adding new Student","loading...");
+
+            } catch(NumberFormatException ex){
+                Toast.makeText(getActivity(), "Do not write long numbers!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void onSuccess(String messageAlert) {
-
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        requireActivity().onBackPressed();
+                    }
+                },1000);
+            }
+        });
     }
 }

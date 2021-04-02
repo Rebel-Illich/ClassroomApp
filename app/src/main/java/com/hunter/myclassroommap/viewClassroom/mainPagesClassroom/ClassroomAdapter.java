@@ -20,12 +20,12 @@ import java.util.List;
 
 public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyViewHolder> {
 
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private FragmentsNavigator fragmentsNavigator;
     private Context context;
     private List<ClassRoom> classRoomList;
 
-    public ClassroomAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<ClassRoom> classRoomList) {
-        this.worksWithAdd = worksWithAdd;
+    public ClassroomAdapter(FragmentsNavigator fragmentsNavigator, Context context, List<ClassRoom> classRoomList) {
+        this.fragmentsNavigator = fragmentsNavigator;
         this.context = context;
         this.classRoomList = classRoomList;
     }
@@ -48,7 +48,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
         holder.editClassroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                worksWithAdd.updateClass(
+                fragmentsNavigator.updateClass(
                         item
                 );
             }
@@ -59,7 +59,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                worksWithAdd.mainStudent(item);
+                fragmentsNavigator.mainStudent(item);
             }
         });
     }

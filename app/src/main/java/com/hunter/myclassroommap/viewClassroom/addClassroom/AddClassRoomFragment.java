@@ -17,20 +17,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
 
 
 public class AddClassRoomFragment extends Fragment implements AddClassRoomContract.View {
 
     private ProgressDialog progressDialog;
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private FragmentsNavigator fragmentsNavigator;
     private AddClassRoomContract.Presenter addPresenter;
     private EditText nameAddInput, roomAddInput, floorAddInput, countOfStudentsAddInput;
     private Button add_button;
 
-    public static AddClassRoomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
+    public static AddClassRoomFragment newInstance(FragmentsNavigator fragmentsNavigator) {
         AddClassRoomFragment instance =  new AddClassRoomFragment();
-        instance.worksWithAdd = worksWithAdd;
+        instance.fragmentsNavigator = fragmentsNavigator;
         return instance;
     }
 

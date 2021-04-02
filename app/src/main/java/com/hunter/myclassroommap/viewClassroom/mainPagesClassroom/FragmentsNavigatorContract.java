@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import com.hunter.myclassroommap.model.ClassRoom;
 
-public interface FragmentController {
+public interface FragmentsNavigatorContract {
     void mainClass();
 
     void addClass();

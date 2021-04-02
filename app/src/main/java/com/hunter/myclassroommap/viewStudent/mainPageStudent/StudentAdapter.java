@@ -2,7 +2,6 @@ package com.hunter.myclassroommap.viewStudent.mainPageStudent;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,38 +10,32 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
-import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
     private static final String TAG = "StudentAdapter";
     private Context context;
     private RecyclerView recyclerView;
     private List<Student> studentModelList;
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private FragmentsNavigator fragmentsNavigator;
     Integer positionIdStudent = 0;
     CallBackPosition callBackPosition;
+
 
     public interface CallBackPosition{
         void deleteStudentGetPosition(int position);
     }
 
 
-    public StudentAdapter(MainClassroomActivity.WorksWithAdd worksWithAdd, Context context, List<Student> studentModelList, RecyclerView recyclerView) {
+    public StudentAdapter(FragmentsNavigator fragmentsNavigator, Context context, List<Student> studentModelList, RecyclerView recyclerView) {
         Log.d(TAG, "StudentAdapter() called with: context = [" + context + "], studentModelList = [" + studentModelList + "], recyclerView = [" + recyclerView + "]");
-        this.worksWithAdd = worksWithAdd;
+        this.fragmentsNavigator = fragmentsNavigator;
         this.context = context;
         this.studentModelList = studentModelList;
         this.recyclerView = recyclerView;
@@ -79,7 +72,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.editStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                worksWithAdd.editStudent(studentModel);
+                fragmentsNavigator.editStudent(studentModel);
             }
         });
     }

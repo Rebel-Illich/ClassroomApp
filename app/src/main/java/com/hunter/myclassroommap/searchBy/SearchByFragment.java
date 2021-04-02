@@ -1,6 +1,5 @@
 package com.hunter.myclassroommap.searchBy;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentController;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
 import com.hunter.myclassroommap.viewStudent.editStudents.EditStudentFragment;
 

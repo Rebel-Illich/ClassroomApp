@@ -18,7 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
 import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainPresenter;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public class MainClassroomFragment extends Fragment implements MainPresenter.MainView {
 
-    public MainClassroomActivity.WorksWithAdd worksWithAdd;
+    public FragmentsNavigator fragmentsNavigator;
 
     private MainPresenter presenter;
 
@@ -39,9 +38,9 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
     List<ClassRoom> dataList = new ArrayList<>();
     ClassroomAdapter classroomAdapter;
 
-    public static MainClassroomFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
+    public static MainClassroomFragment newInstance(FragmentsNavigator fragmentsNavigator) {
         MainClassroomFragment instance =  new MainClassroomFragment();
-        instance.worksWithAdd = worksWithAdd;
+        instance.fragmentsNavigator = fragmentsNavigator;
         return instance;
     }
 
@@ -66,11 +65,11 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                worksWithAdd.addClass();
+                fragmentsNavigator.addClass();
             }
         });
 
-        classroomAdapter = new ClassroomAdapter(worksWithAdd, getContext(), dataList);
+        classroomAdapter = new ClassroomAdapter(fragmentsNavigator, getContext(), dataList);
         recyclerView.setAdapter(classroomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

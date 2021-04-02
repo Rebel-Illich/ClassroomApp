@@ -19,21 +19,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
-import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
-import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
-import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
-import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomPresenter;
-import com.hunter.myclassroommap.viewStudent.addStudents.AddStudentFragment;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
 import com.hunter.myclassroommap.viewStudent.addStudents.GenderSpinnerAdapter;
-import com.hunter.myclassroommap.viewStudent.mainPageStudent.MainStudentFragment;
 
 public class EditStudentFragment extends Fragment implements EditStudentContract.View {
     private static final String TAG = "EditStudentFragment";
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private FragmentsNavigator fragmentsNavigator;
     private EditStudentContract.Presenter editStudentPresenter;
     private EditText firstNameStudent, secondNameStudent, middleNameStudent, ageStudent;
     private Spinner genderStudent;
@@ -42,7 +35,6 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     private String[] spinnerValueGender;
     private ProgressDialog progressDialog;
     private Student studentM;
-    private Integer currentStudentId;
 
     public static EditStudentFragment newInstance() {
         EditStudentFragment instance =  new EditStudentFragment();

@@ -19,37 +19,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.ClassroomAdapter;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 
 import java.util.ArrayList;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.model.Student;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.ClassroomAdapter;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainStudentFragment extends Fragment implements StudentAndClassContract.View, StudentAdapter.CallBackPosition{
 
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private FragmentsNavigator fragmentsNavigator;
 
     private TextView classId, currentClassName, currentClassRoom, currentClassFloor, currentClassStudents;
     private FloatingActionButton floatingActionButton;
@@ -62,9 +43,9 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     private final List<Student> studentList = new ArrayList<Student>();
     private ProgressDialog progressDialog;
 
-    public static MainStudentFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
+    public static MainStudentFragment newInstance(FragmentsNavigator fragmentsNavigator) {
         MainStudentFragment instance =  new MainStudentFragment();
-        instance.worksWithAdd = worksWithAdd;
+        instance.fragmentsNavigator = fragmentsNavigator;
         return instance;
     }
 
@@ -96,13 +77,13 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                worksWithAdd.addStudent(classRoom);
+                fragmentsNavigator.addStudent(classRoom);
             }
         });
 
         studentPresenter = new StudentPresenter( this, getActivity().getApplicationContext());
         classroomId = getActivity().getIntent().getIntExtra("classroomId",0);
-        studentAdapter = new StudentAdapter(worksWithAdd, getActivity().getApplicationContext(), studentList, recyclerViewStudents);
+        studentAdapter = new StudentAdapter(fragmentsNavigator, getActivity().getApplicationContext(), studentList, recyclerViewStudents);
         recyclerViewStudents.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewStudents.setAdapter(studentAdapter);
     }

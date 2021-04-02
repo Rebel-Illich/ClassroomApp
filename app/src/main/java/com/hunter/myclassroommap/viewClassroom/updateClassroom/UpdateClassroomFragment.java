@@ -22,14 +22,14 @@ import android.widget.Toast;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentController;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigatorContract;
 
 
 public class UpdateClassroomFragment extends Fragment implements UpdateClassroomContract.View {
 
     private UpdateClassroomContract.Presenter editClassroomPresenter;
 
-    private FragmentController worksWithAdd;
+    private FragmentsNavigatorContract worksWithAdd;
     private ProgressDialog progressDialog;
     private EditText nameUpdate;
     private EditText roomUpdate;
@@ -54,8 +54,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentController) {
-            worksWithAdd = (FragmentController) context;
+        if (context instanceof FragmentsNavigatorContract) {
+            worksWithAdd = (FragmentsNavigatorContract) context;
         }
     }
 

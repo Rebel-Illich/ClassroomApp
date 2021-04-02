@@ -23,10 +23,10 @@ import com.hunter.myclassroommap.viewStudent.editStudents.EditStudentFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchByFragment extends Fragment implements SearchByContract.View {
+public class SearchByFragment extends Fragment implements SearchByContract.View, SearchByStudentsRecycler.CallBackAdapter, SearchByClassRoomsRecyclerAdapter.CallBackClassRoomAdapter {
 
     private SearchByClassRoomsRecyclerAdapter searchByClassRoomsRecyclerAdapter;
-    private SearchByStudentsRecyclerAdapter searchByStudentsRecyclerAdapter;
+    private SearchByStudentsRecycler searchByStudentsRecycler;
     private SearchByContract.Presenter presenter;
 
     private List<ClassRoom> classRoomList = new ArrayList<>();
@@ -42,7 +42,6 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_searchby, container, false);
     }
 
@@ -63,8 +62,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    searchByClassRoomsRecyclerAdapter = new SearchByClassRoomsRecyclerAdapter(classRoomList);
-                    searchByClassRoomsRecyclerAdapter.registerSearchByListener(presenter);
+
                     recyclerView.setAdapter(searchByClassRoomsRecyclerAdapter);
 
                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,9 +78,8 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
                        }
                    });
                 } else {
-                    searchByStudentsRecyclerAdapter = new SearchByStudentsRecyclerAdapter(studentList);
-                    searchByStudentsRecyclerAdapter.registerSearchByListener(presenter);
-                    recyclerView.setAdapter(searchByStudentsRecyclerAdapter);
+
+                    recyclerView.setAdapter(searchByStudentsRecycler);
 
                     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
@@ -92,7 +89,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
-                            searchByStudentsRecyclerAdapter.getFilter().filter(newText);
+                            searchByStudentsRecycler.getFilter().filter(newText);
                             return false;
                         }
                     });
@@ -116,19 +113,18 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
     public void updateClassRooms(List<ClassRoom> allClassRoom) {
         classRoomList.clear();
         classRoomList.addAll(allClassRoom);
-        searchByClassRoomsRecyclerAdapter = new SearchByClassRoomsRecyclerAdapter(classRoomList);
-        searchByClassRoomsRecyclerAdapter.registerSearchByListener(presenter);
+        searchByClassRoomsRecyclerAdapter = new SearchByClassRoomsRecyclerAdapter(classRoomList, this);
         recyclerView.setAdapter(searchByClassRoomsRecyclerAdapter);
         searchByClassRoomsRecyclerAdapter.notifyDataSetChanged();    }
 
     @Override
-    public void updateStudents(List<Student> all) {
+    public void updateStudents(List<Student> allStudents) {
         studentList.clear();
-        studentList.addAll(all);
-        searchByStudentsRecyclerAdapter = new SearchByStudentsRecyclerAdapter(studentList);
-        searchByStudentsRecyclerAdapter.registerSearchByListener(presenter);
-        recyclerView.setAdapter(searchByStudentsRecyclerAdapter);
-        searchByStudentsRecyclerAdapter.notifyDataSetChanged();
+        studentList.addAll(allStudents);
+        searchByStudentsRecycler = new SearchByStudentsRecycler(studentList, this);
+        recyclerView.setAdapter(searchByStudentsRecycler);
+        recyclerView.setAdapter(searchByStudentsRecycler);
+        searchByStudentsRecycler.notifyDataSetChanged();
     }
 
     @Override
@@ -138,7 +134,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
         }
         editStudentFragment.setDataStudent(student);
 
-        getActivity().getSupportFragmentManager().beginTransaction()
+                 getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, editStudentFragment)
                 .addToBackStack(null)
                 .commit();
@@ -157,4 +153,13 @@ public class SearchByFragment extends Fragment implements SearchByContract.View 
                 .commit();
     }
 
+    @Override
+    public void onItemStudentClicked(Student position) {
+        presenter.onItemStudentClicked(position);
+    }
+
+    @Override
+    public void onItemClassRoomClicked(ClassRoom classRoom) {
+        presenter.onItemClassRoomClicked(classRoom);
+    }
 }

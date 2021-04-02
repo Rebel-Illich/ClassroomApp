@@ -9,7 +9,7 @@ public interface SearchByContract {
     interface View {
         void updateClassRooms(List<ClassRoom> allClassRoom);
 
-        void updateStudents(List<Student> all);
+        void updateStudents(List<Student> allStudents);
 
         void openStudentFragment(Student student);
 
@@ -23,6 +23,6 @@ public interface SearchByContract {
 
         void onItemClassRoomClicked(ClassRoom classRoom);
 
-        void onItemStudentClicked(Student student);
+        void onItemStudentClicked(Student position);
     }
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +21,23 @@ public class SearchByClassRoomsRecyclerAdapter extends RecyclerView.Adapter<Sear
 
     private final List<ClassRoom> classRoomList;
     private final List<ClassRoom> filterClassRoomList;
-    private SearchByContract.Presenter presenter;
+    private CallBackClassRoomAdapter callBackClassRoomAdapter;
 
-    public SearchByClassRoomsRecyclerAdapter(List<ClassRoom> classRoomList) {
+
+    public SearchByClassRoomsRecyclerAdapter(List<ClassRoom> classRoomList, CallBackClassRoomAdapter callBackClassRoomAdapter)  {
         this.classRoomList = classRoomList;
         this.filterClassRoomList = new ArrayList<>(classRoomList);
+        this.callBackClassRoomAdapter = callBackClassRoomAdapter;
     }
 
-    public void registerSearchByListener(SearchByContract.Presenter presenter) {
-        this.presenter = presenter;
+    public interface CallBackClassRoomAdapter{
+        void onItemClassRoomClicked(ClassRoom classRoom);
     }
-
 
     @NonNull
     @Override
     public SearchByClassRoomsRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_by_card, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_by_card, parent, false),  filterClassRoomList, callBackClassRoomAdapter);
     }
 
     @Override
@@ -88,13 +90,13 @@ public class SearchByClassRoomsRecyclerAdapter extends RecyclerView.Adapter<Sear
 
         final TextView searchResult;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView,  List<ClassRoom> filterClassRoomList, CallBackClassRoomAdapter callBackAdapter) {
             super(itemView);
             searchResult = itemView.findViewById(R.id.search_result_text_view);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.onItemClassRoomClicked(filterClassRoomList.get(getAdapterPosition()));
+                    callBackAdapter.onItemClassRoomClicked(filterClassRoomList.get(getAdapterPosition()));
                 }
             });
         }

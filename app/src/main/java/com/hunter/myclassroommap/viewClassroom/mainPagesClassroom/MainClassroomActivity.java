@@ -189,18 +189,46 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
         }
     }
 
+    MenuItem searchItem;
+    MenuItem mainScreenItem;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.my_menu, menu);
+
+        searchItem = menu.findItem(R.id.search_by);
+        mainScreenItem = menu.findItem(R.id.search_menu);
+        mainScreenItem.setVisible(false);
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment fragment = new SearchByFragment();
-        FragmentController fragmentController = this;
-        fragmentController.replaceFragment(fragment);
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.search_by:
+                Fragment fragment = new SearchByFragment();
+                FragmentController fragmentController = this;
+                fragmentController.replaceFragment(fragment);
+                searchItem.setVisible(false);
+                mainScreenItem.setVisible(true);
+                return true;
+            case R.id.search_menu:
+                searchItem.setVisible(true);
+                mainScreenItem.setVisible(false);
+                worksWithAdd.mainClass();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() == 1) return;
+        super.onBackPressed();
+        searchItem.setVisible(true);
+        mainScreenItem.setVisible(false);
     }
 }

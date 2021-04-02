@@ -7,9 +7,9 @@ public class Student {
     String middleName;
     String studentGender;
     Integer studentAge;
-    Integer classroomId;
+    Long classroomId;
 
-    public Student(Integer studentId, String firstName, String lastName, String middleName, String studentGender, Integer studentAge, Integer classroomId) {
+    public Student(Integer studentId, String firstName, String lastName, String middleName, String studentGender, Integer studentAge, Long classroomId) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,6 +18,7 @@ public class Student {
         this.studentAge = studentAge;
         this.classroomId = classroomId;
     }
+
 
     public Integer getStudentId() {
         return studentId;
@@ -67,11 +68,24 @@ public class Student {
         this.studentAge = studentAge;
     }
 
-    public Integer getClassroomId() {
+    public Long getClassroomId() {
         return classroomId;
     }
 
-    public void setClassroomId(Integer classroomId) {
+    public void setClassroomId(Long classroomId) {
         this.classroomId = classroomId;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+            "studentId=" + studentId +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", middleName='" + middleName + '\'' +
+            ", studentGender='" + studentGender + '\'' +
+            ", studentAge=" + studentAge +
+            ", classroomId=" + classroomId +
+            '}';
     }
 }

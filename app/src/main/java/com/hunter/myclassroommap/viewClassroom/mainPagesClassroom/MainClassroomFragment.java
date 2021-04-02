@@ -79,6 +79,7 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
     public void onResume() {
         super.onResume();
         presenter.restoreDataArrays();
+        classroomAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -20,4 +20,9 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
     public List<Student> loadAllData(int classroomId) {
         return studentRepository.getStudentsFromCurrentClass(classroomId);
     }
+
+    @Override
+    public void alertToDeleteClass(int position) {
+
+    }
 }

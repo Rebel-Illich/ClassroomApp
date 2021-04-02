@@ -1,12 +1,14 @@
 package com.hunter.myclassroommap.viewStudent.addStudents;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,12 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.hunter.myclassroommap.R;
+import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
 import com.hunter.myclassroommap.viewStudent.mainPageStudent.MainStudentFragment;
 
 public class AddStudentFragment extends Fragment implements AddStudentContract.View {
-
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
 
     private AddStudentContract.Presenter addStudentPresenter;
     private TextView firstNameStudent, lastNameStudent, middleNameStudent, ageStudent;
@@ -32,10 +33,12 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
     private Button addStudentButton;
     private ProgressDialog progressDialog;
     Integer positionClass;
+    private ClassRoom classRoom;
+    private Context context;
 
-    public static AddStudentFragment newInstance(MainClassroomActivity.WorksWithAdd worksWithAdd) {
+    public static AddStudentFragment newInstance(ClassRoom classRoom) {
         AddStudentFragment instance =  new AddStudentFragment();
-        instance.worksWithAdd = worksWithAdd;
+        instance.classRoom = classRoom;
         return instance;
     }
 
@@ -59,8 +62,8 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         genderSpinner = view.findViewById(R.id.spinner_gender);
 
         spinnerValueGender = new String[]{
-                "Female",
-                "Male"
+                "Male"  ,
+                "Female"
         };
 
         genderSpinnerAdapter = new GenderSpinnerAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item);
@@ -73,12 +76,11 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         positionClass = getActivity().getIntent().getIntExtra("classroomPosition",0);
         addStudentButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                addStudentFields();
+            public void onClick(View v) { addStudentFields();
+                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         });
-
-
     }
 
     private void addStudentFields() {
@@ -98,7 +100,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
                 String gender = genderSpinner.getSelectedItem().toString();
                 int age = Integer.parseInt(ageStudent.getText().toString());
 
-                addStudentPresenter.addButtonClicked(firstName, lastName, middleName, gender, age, positionClass);
+                addStudentPresenter.addButtonClicked(firstName, lastName, middleName, gender, age, classRoom.getId());
 
                 progressDialog = ProgressDialog.show(getActivity(),"Adding new Student","loading...");
 
@@ -124,5 +126,10 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
                 },1000);
             }
         });
+    }
+
+
+    public void setData(ClassRoom item) {
+        this.classRoom = item;
     }
 }

@@ -7,11 +7,7 @@ public interface EditStudentContract {
         void onSuccess(String messageAlert);
     }
 
-    interface Repository{
-        long editStudent(Student studentModel);
-    }
-
     interface Presenter {
-
+        void editDataClassroom(Student studentM);
     }
 }

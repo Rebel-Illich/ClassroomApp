@@ -8,13 +8,20 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.model.Student;
+import com.hunter.myclassroommap.searchBy.SearchByFragment;
 import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
 import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
 import com.hunter.myclassroommap.viewStudent.addStudents.AddStudentFragment;
+import com.hunter.myclassroommap.viewStudent.editStudents.EditStudentContract;
+import com.hunter.myclassroommap.viewStudent.editStudents.EditStudentFragment;
 import com.hunter.myclassroommap.viewStudent.mainPageStudent.MainStudentFragment;
 
 public class MainClassroomActivity extends AppCompatActivity implements FragmentController {
@@ -24,6 +31,7 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
     private UpdateClassroomFragment updateClassroomFragment;
     private AddStudentFragment addStudentFragment;
     private MainStudentFragment mainStudentFragment;
+    private EditStudentFragment editStudentFragment;
     private WorksWithAdd worksWithAdd;
     private ClassroomRepository classroomRepository;
 
@@ -86,10 +94,9 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
     }
 
     @Override
-    public void addStudent() {
-        if (addStudentFragment == null) {
-            addStudentFragment = AddStudentFragment.newInstance(worksWithAdd);
-        }
+    public void addStudent(ClassRoom classRoom) {
+
+        addStudentFragment = AddStudentFragment.newInstance(classRoom);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, addStudentFragment)
                 .addToBackStack(null)
@@ -97,8 +104,12 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
     }
 
     @Override
-    public void returnBack() {
-        getSupportFragmentManager().popBackStack();
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_container, fragment, fragment.toString());
+        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.commit();
     }
 
 
@@ -108,9 +119,7 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
         }
 
         public void addClass(){
-            if (addClassRoomFragment == null) {
-                addClassRoomFragment = AddClassRoomFragment.newInstance(worksWithAdd);
-            }
+               addClassRoomFragment = AddClassRoomFragment.newInstance(worksWithAdd);
                getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, addClassRoomFragment)
                    .addToBackStack(null)
@@ -125,8 +134,13 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
                 .commit();
         }
 
-        public void returnBack() {
-            getSupportFragmentManager().popBackStack();
+        @Override
+        public void replaceFragment(Fragment fragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_container, fragment, fragment.toString());
+            fragmentTransaction.addToBackStack(fragment.toString());
+            fragmentTransaction.commit();
         }
 
         public void updateClass(ClassRoom item) {
@@ -154,16 +168,25 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
                     .commit();
         }
 
-        public void addStudent() {
-            if (addStudentFragment == null) {
-                addStudentFragment = AddStudentFragment.newInstance(worksWithAdd);
-            }
+        public void addStudent(ClassRoom classRoom) {
+            addStudentFragment = AddStudentFragment.newInstance(classRoom);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, addStudentFragment)
                     .addToBackStack(null)
                     .commit();
         }
 
+        public void editStudent(Student student) {
+            if (editStudentFragment == null) {
+                editStudentFragment = EditStudentFragment.newInstance();
+            }
+            editStudentFragment.setDataStudent(student);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, editStudentFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override
@@ -175,34 +198,9 @@ public class MainClassroomActivity extends AppCompatActivity implements Fragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.delete_all){
-            confirmDialog();
-        }
+        Fragment fragment = new SearchByFragment();
+        FragmentController fragmentController = this;
+        fragmentController.replaceFragment(fragment);
         return super.onOptionsItemSelected(item);
-    }
-
-    void confirmDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete All?");
-        builder.setMessage("Are you sure you want to delete all Data?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                classroomRepository = new ClassroomRepository(MainClassroomActivity.this);
-                classroomRepository.deleteAllData();
-
-                  // Refresh Fragment
-                mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
-
-                worksWithAdd.mainClass();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        builder.create().show();
     }
 }

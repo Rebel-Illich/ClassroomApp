@@ -60,12 +60,13 @@ public class ClassroomDatabase extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO "+ TABLE_STUDENT +" (" + COLUMN_NAME_STUDENT
                 + ", " + COLUMN_LAST_NAME  + ","  + COLUMN_MIDDLE_NAME + ", " + COLUMN_STUDENT_GENDER + ", " + COLUMN_STUDENT_AGE
-                + ", " + COLUMN_CLASSROOM_ID + ") VALUES ('SS','sss', 'sss', 's', 1995, 1);");
+                + ", " + COLUMN_CLASSROOM_ID + ") VALUES ('Ivan','Ivanov', 'Looper', 'G', 1995, 1);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME + TABLE_STUDENT);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_STUDENT);
         onCreate(db);
     }
 }

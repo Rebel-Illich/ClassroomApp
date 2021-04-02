@@ -26,24 +26,6 @@ public class ClassroomRepository {
         dbHelper.close();
     }
 
-    private Cursor getAllEntries() {
-        String[] columns = new String[]{ClassroomDatabase.COLUMN_ID, ClassroomDatabase.COLUMN_NAME,
-            ClassroomDatabase.COLUMN_ROOM_NUMBER, ClassroomDatabase.COLUMN_FLOOR_NUMBER,
-            ClassroomDatabase.COLUMN_STUDENTS_COUNT};
-        return database.query(ClassroomDatabase.TABLE_NAME, columns, null, null, null, null, null);
-    }
-
-    public long getCount() {
-        return DatabaseUtils.queryNumEntries(database, ClassroomDatabase.TABLE_NAME);
-    }
-
-    public long delete(long userId) {
-
-        String whereClause = "_id = ?";
-        String[] whereArgs = new String[]{String.valueOf(userId)};
-        return database.delete(ClassroomDatabase.TABLE_NAME, whereClause, whereArgs);
-    }
-
     public Cursor readAllData() {
         String query = "SELECT * FROM " + ClassroomDatabase.TABLE_NAME;
         database = dbHelper.getReadableDatabase();

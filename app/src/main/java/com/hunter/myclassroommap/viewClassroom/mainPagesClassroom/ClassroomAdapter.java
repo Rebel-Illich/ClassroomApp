@@ -43,7 +43,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.MyVi
         ClassRoom item = classRoomList.get(position);
         holder.class_id_txt.setText(String.valueOf(item.getId()));
         holder.class_name.setText(String.valueOf(item.getClassroomName()));
-        holder.numberOfStudents.setText(String.valueOf(item.getNumberOfStudents()));
+        holder.numberOfStudents.setText("№ " + item.getNumberOfStudents());
 
         holder.editClassroom.setOnClickListener(new View.OnClickListener() {
             @Override

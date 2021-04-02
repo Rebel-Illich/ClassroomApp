@@ -17,11 +17,11 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
     }
 
     @Override
-    public void addButtonClicked(String firstName, String lastName, String middleName, String gender, int age, int position) {
+    public void addButtonClicked(String firstName, String lastName, String middleName, String gender, int age, long classId) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                studentModel = new Student(0, firstName, lastName, middleName, gender, age, position);
+                studentModel = new Student(0, firstName, lastName, middleName, gender, age, classId);
                 repository.addStudent(studentModel);
                 view.onSuccess("New student is added!");
             }

@@ -6,4 +6,6 @@
         <item>Students</item>
     </string-array>
     <string name="search_title">Search By</string>
+    <string name="class_name">Class: </string>
+    <string name="class_id">1 </string>
 </resources>

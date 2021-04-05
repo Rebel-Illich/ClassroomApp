@@ -4,13 +4,16 @@ import com.hunter.myclassroommap.model.Student;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
+
 public interface StudentAndClassContract {
     interface View {
         void onSuccess(String messageAlert);
     }
 
     interface Presenter{
-        List<Student> loadAllData(int position);
+        Single<List<Student>> loadAllData(int position);
 
         void alertToDeleteClass(int position);
     }

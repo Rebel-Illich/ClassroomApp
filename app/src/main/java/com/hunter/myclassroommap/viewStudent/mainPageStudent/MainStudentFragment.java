@@ -1,5 +1,6 @@
 package com.hunter.myclassroommap.viewStudent.mainPageStudent;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -104,8 +105,22 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         super.onResume();
         getInfoAboutCurrClassroom();
         studentList.clear();
-        studentList.addAll(studentPresenter.loadAllData((int) classRoom.getId()));
-        studentAdapter.notifyDataSetChanged();
+    //  studentList.addAll(studentPresenter.loadAllData((int) classRoom.getId()));
+        getStudentsData();
+    }
+
+    @SuppressLint("CheckResult")
+    private void getStudentsData() {
+        studentPresenter.loadAllData((int) classRoom.getId())
+                .subscribe(
+                        students -> {
+                            studentList.addAll(students);
+                            studentAdapter.notifyDataSetChanged();
+                        },
+                        error ->{
+                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                );
     }
 
     public void setData(ClassRoom item) {

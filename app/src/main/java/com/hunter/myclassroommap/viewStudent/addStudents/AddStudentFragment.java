@@ -74,12 +74,10 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         genderSpinner.setAdapter(genderSpinnerAdapter);
         addStudentPresenter = new AddStudentPresenter(this, getActivity().getApplicationContext());
         positionClass = getActivity().getIntent().getIntExtra("classroomPosition",0);
-        addStudentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { addStudentFields();
-                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
+        addStudentButton.setOnClickListener(v -> {
+            addStudentFields();
+            InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         });
     }
 
@@ -112,6 +110,24 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
 
     @Override
     public void onSuccess(String messageAlert) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        requireActivity().onBackPressed();
+                    }
+                },1000);
+            }
+        });
+    }
+
+    @Override
+    public void onError(String messageAlert) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

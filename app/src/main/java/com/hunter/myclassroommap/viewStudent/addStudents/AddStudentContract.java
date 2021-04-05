@@ -2,9 +2,14 @@ package com.hunter.myclassroommap.viewStudent.addStudents;
 
 import com.hunter.myclassroommap.model.Student;
 
+import io.reactivex.Single;
+
+
 public interface AddStudentContract {
     interface View {
         void onSuccess(String messageAlert);
+
+        void onError(String messageAlert);
     }
 
     interface Presenter{
@@ -12,6 +17,6 @@ public interface AddStudentContract {
     }
 
     interface Repository{
-        long addStudent(Student studentModel);
+        Single<Student> addStudent(Student studentModel);
     }
 }

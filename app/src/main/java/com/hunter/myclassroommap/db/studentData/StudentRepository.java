@@ -15,6 +15,9 @@ import com.hunter.myclassroommap.viewStudent.mainPageStudent.StudentAndClassCont
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+
 public class StudentRepository implements StudentAndClassContract.Repository, AddStudentContract.Repository  {
     private ClassroomDatabase dataBaseStudent;
     private SQLiteDatabase sqLiteDatabase;
@@ -68,17 +71,27 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
     }
 
     @Override
-    public long addStudent(Student studentModel) {
-        sqLiteDatabase = dataBaseStudent.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(ClassroomDatabase.COLUMN_NAME_STUDENT, studentModel.getFirstName());
-        contentValues.put(ClassroomDatabase.COLUMN_LAST_NAME, studentModel.getLastName());
-        contentValues.put(ClassroomDatabase.COLUMN_MIDDLE_NAME, studentModel.getMiddleName());
-        contentValues.put(ClassroomDatabase.COLUMN_STUDENT_GENDER, studentModel.getStudentGender());
-        contentValues.put(ClassroomDatabase.COLUMN_STUDENT_AGE, studentModel.getStudentAge());
-        contentValues.put(ClassroomDatabase.COLUMN_CLASSROOM_ID, studentModel.getClassroomId());
+    public Single<Student> addStudent(Student studentModel) {
+        return Single.fromPublisher( publisher -> {
+            sqLiteDatabase = dataBaseStudent.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ClassroomDatabase.COLUMN_NAME_STUDENT, studentModel.getFirstName());
+            contentValues.put(ClassroomDatabase.COLUMN_LAST_NAME, studentModel.getLastName());
+            contentValues.put(ClassroomDatabase.COLUMN_MIDDLE_NAME, studentModel.getMiddleName());
+            contentValues.put(ClassroomDatabase.COLUMN_STUDENT_GENDER, studentModel.getStudentGender());
+            contentValues.put(ClassroomDatabase.COLUMN_STUDENT_AGE, studentModel.getStudentAge());
+            contentValues.put(ClassroomDatabase.COLUMN_CLASSROOM_ID, studentModel.getClassroomId());
 
-        return sqLiteDatabase.insert(ClassroomDatabase.TABLE_STUDENT, null, contentValues);
+            try {
+                long studentId = sqLiteDatabase.insert(ClassroomDatabase.TABLE_STUDENT, null, contentValues);
+                studentModel.setStudentId((int) studentId);
+                publisher.onNext(studentModel);
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
+            }
+        });
     }
 
     public void deleteOneRow(Integer row_id) {
@@ -86,7 +99,8 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         sqLiteDatabase.delete(dataBaseStudent.TABLE_STUDENT, "ID=?", new String[]{String.valueOf(row_id)});
     }
 
-    public long updateData(Student studentM) {
+    public  Single<Student> updateData(Student studentM) {
+        return Single.fromPublisher( publisher -> {
         SQLiteDatabase db = dataBaseStudent.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -96,7 +110,16 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         cv.put(ClassroomDatabase.COLUMN_STUDENT_AGE, studentM.getStudentAge());
         cv.put(ClassroomDatabase.COLUMN_STUDENT_GENDER, studentM.getStudentGender());
 
-        return db.update(ClassroomDatabase.TABLE_STUDENT, cv, "ID=?",  new String[]{ String.valueOf(studentM.getStudentId()) });
+            try {
+                long studentId = db.update(ClassroomDatabase.TABLE_STUDENT, cv, "ID=?",  new String[]{ String.valueOf(studentM.getStudentId()) });
+                studentM.setStudentId((int) studentId);
+                publisher.onNext(studentM);
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
+            }
+        });
     }
 
 

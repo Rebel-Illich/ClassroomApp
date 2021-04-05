@@ -2,6 +2,8 @@ package com.hunter.myclassroommap.searchBy;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -9,6 +11,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +51,7 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         searchView = view.findViewById(R.id.edit_search_view_query);
 
@@ -122,7 +126,6 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
         studentList.clear();
         studentList.addAll(allStudents);
         searchByStudentsRecycler = new SearchByStudentsRecycler(studentList, this);
-        recyclerView.setAdapter(searchByStudentsRecycler);
         recyclerView.setAdapter(searchByStudentsRecycler);
         searchByStudentsRecycler.notifyDataSetChanged();
     }

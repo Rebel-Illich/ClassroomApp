@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import com.hunter.myclassroommap.R;
 
@@ -60,6 +61,7 @@ public class MainClassroomActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         if(getSupportFragmentManager().getBackStackEntryCount() == 1) return;
+        getSupportActionBar().show();
         super.onBackPressed();
         searchItem.setVisible(true);
         mainScreenItem.setVisible(false);

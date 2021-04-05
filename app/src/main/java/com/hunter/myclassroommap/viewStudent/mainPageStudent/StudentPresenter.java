@@ -7,6 +7,9 @@ import com.hunter.myclassroommap.model.Student;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
+
 public class StudentPresenter implements StudentAndClassContract.Presenter  {
     StudentAndClassContract.View view;
     StudentAndClassContract.Repository studentRepository;
@@ -17,7 +20,25 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
     }
 
     @Override
-    public List<Student> loadAllData(int classroomId) {
-        return studentRepository.getStudentsFromCurrentClass(classroomId);
+    public Single<List<Student>> loadAllData(int classroomId) {
+        return Single.fromPublisher(publisher -> {
+            try {
+                List<Student> studentList = studentRepository.getStudentsFromCurrentClass(classroomId);
+                if (studentList.isEmpty()) {
+                    publisher.onError(new RuntimeException("There are not students"));
+                } else {
+                    publisher.onNext(studentList);
+                }
+            } catch (Exception e) {
+                publisher.onError(e);
+
+            } finally {
+                publisher.onComplete();
+            }
+        });
+    }
+
+    @Override
+    public void alertToDeleteClass(int position) {
     }
 }

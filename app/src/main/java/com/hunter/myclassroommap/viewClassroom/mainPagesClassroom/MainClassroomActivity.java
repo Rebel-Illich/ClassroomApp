@@ -1,208 +1,67 @@
 package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
-import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.addClassroom.AddClassRoomFragment;
-import com.hunter.myclassroommap.viewClassroom.updateClassroom.UpdateClassroomFragment;
-import com.hunter.myclassroommap.viewStudent.addStudents.AddStudentFragment;
-import com.hunter.myclassroommap.viewStudent.mainPageStudent.MainStudentFragment;
 
-public class MainClassroomActivity extends AppCompatActivity implements FragmentController {
+public class MainClassroomActivity extends AppCompatActivity{
 
-    private AddClassRoomFragment addClassRoomFragment;
-    private MainClassroomFragment mainClassroomFragment;
-    private UpdateClassroomFragment updateClassroomFragment;
-    private AddStudentFragment addStudentFragment;
-    private MainStudentFragment mainStudentFragment;
-    private WorksWithAdd worksWithAdd;
-    private ClassroomRepository classroomRepository;
+
+    private FragmentsNavigator fragmentsNavigator;
+    MenuItem searchItem;
+    MenuItem mainScreenItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.controller_activity);
 
-        worksWithAdd= new WorksWithAdd();
+        fragmentsNavigator = new FragmentsNavigator(getSupportFragmentManager());
 
-        mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
-
-        worksWithAdd.mainClass();
-    }
-
-    @Override
-    public void mainClass() {
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.main_container, mainClassroomFragment)
-            .addToBackStack(null)
-            .commit();
-    }
-
-    @Override
-    public void addClass() {
-        if (addClassRoomFragment == null) {
-            addClassRoomFragment = AddClassRoomFragment.newInstance(worksWithAdd);
-        }
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.main_container, addClassRoomFragment)
-            .addToBackStack(null)
-            .commit();
-    }
-
-    @Override
-    public void updateClass(ClassRoom item) {
-        if (updateClassroomFragment == null) {
-            updateClassroomFragment = UpdateClassroomFragment.newInstance();
-        }
-        updateClassroomFragment.setData(item);
-
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.main_container, updateClassroomFragment)
-            .addToBackStack(null)
-            .commit();
-    }
-
-    @Override
-    public void mainStudent(ClassRoom item) {
-        if (mainStudentFragment == null) {
-            mainStudentFragment = MainStudentFragment.newInstance(worksWithAdd);
-        }
-
-        mainStudentFragment.setData(item);
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainStudentFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void addStudent() {
-        if (addStudentFragment == null) {
-            addStudentFragment = AddStudentFragment.newInstance(worksWithAdd);
-        }
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, addStudentFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void returnBack() {
-        getSupportFragmentManager().popBackStack();
-    }
-
-
-    public class WorksWithAdd implements FragmentController {
-        public WorksWithAdd() {
-            super();
-        }
-
-        public void addClass(){
-            if (addClassRoomFragment == null) {
-                addClassRoomFragment = AddClassRoomFragment.newInstance(worksWithAdd);
-            }
-               getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, addClassRoomFragment)
-                   .addToBackStack(null)
-                   .commit();
-        }
-
-
-        public void mainClass() {
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, mainClassroomFragment)
-                .addToBackStack(null)
-                .commit();
-        }
-
-        public void returnBack() {
-            getSupportFragmentManager().popBackStack();
-        }
-
-        public void updateClass(ClassRoom item) {
-            if (updateClassroomFragment == null) {
-                updateClassroomFragment = UpdateClassroomFragment.newInstance();
-            }
-            updateClassroomFragment.setData(item);
-
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, updateClassroomFragment)
-                .addToBackStack(null)
-                .commit();
-        }
-
-        public void mainStudent(ClassRoom item) {
-            if (mainStudentFragment == null) {
-                mainStudentFragment = MainStudentFragment.newInstance(worksWithAdd);
-            }
-
-            mainStudentFragment.setData(item);
-
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, mainStudentFragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-
-        public void addStudent() {
-            if (addStudentFragment == null) {
-                addStudentFragment = AddStudentFragment.newInstance(worksWithAdd);
-            }
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, addStudentFragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
-
+        fragmentsNavigator.mainClass();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.my_menu, menu);
+
+        searchItem = menu.findItem(R.id.search_by);
+        mainScreenItem = menu.findItem(R.id.search_menu);
+        mainScreenItem.setVisible(false);
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.delete_all){
-            confirmDialog();
+        switch (item.getItemId()) {
+            case R.id.search_by:
+                fragmentsNavigator.showSearchFragment();
+                searchItem.setVisible(false);
+                mainScreenItem.setVisible(true);
+                return true;
+            case R.id.search_menu:
+                searchItem.setVisible(true);
+                mainScreenItem.setVisible(false);
+                fragmentsNavigator.mainClass();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
-    void confirmDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete All?");
-        builder.setMessage("Are you sure you want to delete all Data?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                classroomRepository = new ClassroomRepository(MainClassroomActivity.this);
-                classroomRepository.deleteAllData();
-
-                  // Refresh Fragment
-                mainClassroomFragment = MainClassroomFragment.newInstance(worksWithAdd);
-
-                worksWithAdd.mainClass();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        builder.create().show();
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() == 1) return;
+        super.onBackPressed();
+        searchItem.setVisible(true);
+        mainScreenItem.setVisible(false);
     }
 }

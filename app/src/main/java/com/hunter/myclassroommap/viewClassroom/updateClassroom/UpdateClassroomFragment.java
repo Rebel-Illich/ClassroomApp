@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,14 +22,14 @@ import android.widget.Toast;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentController;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigatorContract;
 
 
 public class UpdateClassroomFragment extends Fragment implements UpdateClassroomContract.View {
 
     private UpdateClassroomContract.Presenter editClassroomPresenter;
 
-    private FragmentController worksWithAdd;
+    private FragmentsNavigatorContract worksWithAdd;
     private ProgressDialog progressDialog;
     private EditText nameUpdate;
     private EditText roomUpdate;
@@ -53,8 +54,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentController) {
-            worksWithAdd = (FragmentController) context;
+        if (context instanceof FragmentsNavigatorContract) {
+            worksWithAdd = (FragmentsNavigatorContract) context;
         }
     }
 
@@ -74,6 +75,8 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 classroomUpdateFields();
             }
         });
@@ -162,7 +165,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         builder.create().show();
     }
 
-    public void setData(ClassRoom item) {
-        this.classRoom = item;
+    public void setData(ClassRoom classRoom) {
+        this.classRoom = classRoom;
     }
 }

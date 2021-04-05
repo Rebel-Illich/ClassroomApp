@@ -11,8 +11,9 @@
         android:theme="@style/Theme.MyClassRoomMap">
         <activity
             android:name=".viewClassroom.mainPagesClassroom.MainClassroomActivity"
+            android:label="Class Room Map"
             android:windowSoftInputMode="stateHidden|adjustPan"
-            android:label="Class Room Map">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

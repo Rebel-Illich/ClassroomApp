@@ -2,6 +2,7 @@ package com.hunter.myclassroommap.viewStudent.mainPageStudent;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,30 +10,37 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
-
+    private static final String TAG = "StudentAdapter";
     private Context context;
     private RecyclerView recyclerView;
     private List<Student> studentModelList;
-    private MainClassroomActivity.WorksWithAdd worksWithAdd;
+    private FragmentsNavigator fragmentsNavigator;
     Integer positionIdStudent = 0;
+    CallBackPosition callBackPosition;
 
-    public StudentAdapter(Context context, List<Student> studentModelList, RecyclerView recyclerView) {
+
+    public interface CallBackPosition{
+        void deleteStudentGetPosition(int position);
+    }
+
+
+    public StudentAdapter(FragmentsNavigator fragmentsNavigator, Context context, List<Student> studentModelList, RecyclerView recyclerView) {
+        Log.d(TAG, "StudentAdapter() called with: context = [" + context + "], studentModelList = [" + studentModelList + "], recyclerView = [" + recyclerView + "]");
+        this.fragmentsNavigator = fragmentsNavigator;
         this.context = context;
         this.studentModelList = studentModelList;
         this.recyclerView = recyclerView;
     }
+
 
     @NonNull
     @Override
@@ -50,18 +58,21 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.studentFirstName.setText(studentModel.getFirstName());
         holder.studentId.setText(Integer.toString(position + 1));
         holder.studentSecondName.setText(studentModel.getLastName());
-        holder.deleteStudent.setImageResource(R.drawable.ic_base_delete);
+   //   holder.deleteStudent.setImageResource(R.drawable.ic_base_delete);
         holder.editStudent.setImageResource(R.drawable.ic_baseline_edit);
-        holder.deleteStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+//        holder.deleteStudent.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                positionIdStudent = studentModel.getStudentId();
+//                callBackPosition.deleteStudentGetPosition(positionIdStudent);
+//                studentModelList.remove(position);
+//            }
+//        });
 
         holder.editStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                passDataToEditStudentInfo(studentModel);
+                fragmentsNavigator.editStudent(studentModel);
             }
         });
     }
@@ -81,9 +92,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
             studentFirstName = itemView.findViewById(R.id.student_name);
             studentSecondName = itemView.findViewById(R.id.student_lastname);
             editStudent = itemView.findViewById(R.id.buttonEditStudent);
-            deleteStudent = itemView.findViewById(R.id.buttonDeleteStudent);
+         //   deleteStudent = itemView.findViewById(R.id.buttonDeleteStudent);
         }
-    }
-    public void passDataToEditStudentInfo(Student studentModel){
     }
 }

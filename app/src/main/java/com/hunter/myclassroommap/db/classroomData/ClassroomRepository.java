@@ -7,6 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.model.Student;
+
+import io.reactivex.Single;
 
 public class ClassroomRepository {
 
@@ -15,15 +18,6 @@ public class ClassroomRepository {
 
     public ClassroomRepository(Context context) {
         dbHelper = new ClassroomDatabase(context.getApplicationContext());
-    }
-
-    public ClassroomRepository open() {
-        database = dbHelper.getWritableDatabase();
-        return this;
-    }
-
-    public void close() {
-        dbHelper.close();
     }
 
     public Cursor readAllData() {
@@ -39,7 +33,7 @@ public class ClassroomRepository {
 
     public void deleteOneRow(long row_id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long result = db.delete(dbHelper.TABLE_NAME, "ID=?", new String[]{String.valueOf(row_id)});
+        db.delete(dbHelper.TABLE_NAME, "ID=?", new String[]{String.valueOf(row_id)});
     }
 
     public void deleteAllData() {
@@ -47,15 +41,24 @@ public class ClassroomRepository {
         db.execSQL("DELETE FROM " + dbHelper.TABLE_NAME);
     }
 
-    public long insertData(ClassRoom classRoom) {
+    public Single<ClassRoom> insertData(ClassRoom classRoom) {
+        return Single.fromPublisher( publisher -> {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(ClassroomDatabase.COLUMN_NAME, classRoom.getClassroomName());
         cv.put(ClassroomDatabase.COLUMN_ROOM_NUMBER, classRoom.getClassroomRoomNumber());
         cv.put(ClassroomDatabase.COLUMN_FLOOR_NUMBER, classRoom.getClassroomFloor());
         cv.put(ClassroomDatabase.COLUMN_STUDENTS_COUNT, classRoom.getNumberOfStudents());
-
-        return db.insert(ClassroomDatabase.TABLE_NAME, null, cv);
+            try {
+                long studentId = db.insert(ClassroomDatabase.TABLE_NAME, null, cv);
+                classRoom.setId((long) studentId);
+                publisher.onNext(classRoom);
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
+            }
+        });
     }
 
     public long updateData(ClassRoom classRoom) {

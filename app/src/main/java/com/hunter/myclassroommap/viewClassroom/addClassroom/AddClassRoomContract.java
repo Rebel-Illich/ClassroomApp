@@ -5,6 +5,8 @@ public interface AddClassRoomContract {
     interface View {
 
         void onSuccess(String messageAlert);
+
+        void onError(String messageAlert);
     }
 
     interface Presenter {

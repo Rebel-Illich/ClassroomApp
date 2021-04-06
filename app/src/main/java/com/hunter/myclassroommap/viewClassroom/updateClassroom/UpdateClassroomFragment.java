@@ -147,14 +147,14 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
 
     public void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete " + nameUpdate + " ?");
-        builder.setMessage("Are you sure you want to delete " + nameUpdate.getText().toString() + " ?");
+        builder.setTitle("Delete " + nameUpdate.getText().toString().trim() + " ?");
+        builder.setMessage("Are you sure you want to delete " + nameUpdate.getText().toString().trim() + " ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ClassroomRepository classroomRepository = new ClassroomRepository(getActivity());
                 classroomRepository.deleteOneRow(classRoom.getId());
-                worksWithAdd.mainClass();
+                requireActivity().onBackPressed();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

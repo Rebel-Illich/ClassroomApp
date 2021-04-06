@@ -9,7 +9,8 @@
     android:padding="2dp"
     android:layout_margin="4dp"
     card_view:cardCornerRadius="9dp"
-    card_view:cardElevation="2dp">
+    card_view:cardElevation="2dp"
+    android:id="@+id/studentsLayout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

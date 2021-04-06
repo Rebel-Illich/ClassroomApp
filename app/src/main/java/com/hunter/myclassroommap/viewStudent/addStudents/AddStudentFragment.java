@@ -126,6 +126,23 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
         });
     }
 
+    @Override
+    public void onError(String messageAlert) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        requireActivity().onBackPressed();
+                    }
+                },1000);
+            }
+        });
+    }
 
     public void setData(ClassRoom item) {
         this.classRoom = item;

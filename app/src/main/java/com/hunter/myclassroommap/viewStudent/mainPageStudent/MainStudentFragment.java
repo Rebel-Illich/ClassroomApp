@@ -105,7 +105,6 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         super.onResume();
         getInfoAboutCurrClassroom();
         studentList.clear();
-    //    studentList.addAll(studentPresenter.loadAllData((int) classRoom.getId()));
         getStudentsData();
     }
 

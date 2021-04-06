@@ -153,6 +153,24 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
         });
     }
 
+    @Override
+    public void onError(String messageAlert) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_LONG).show();
+                        requireActivity().onBackPressed();
+                    }
+                },2000);
+            }
+        });
+    }
+
     public void setDataStudent(Student student) {
         this.studentM = student;
     }
@@ -160,6 +178,9 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     public void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete " + firstNameStudent + " ?");
+
+        builder.setTitle("Delete " + firstNameStudent.getText().toString().trim() + " ?");
+
         builder.setMessage("Are you sure you want to delete " + firstNameStudent.getText().toString() + " ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override

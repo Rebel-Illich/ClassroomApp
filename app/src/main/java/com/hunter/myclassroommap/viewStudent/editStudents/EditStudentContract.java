@@ -5,7 +5,10 @@ import com.hunter.myclassroommap.model.Student;
 public interface EditStudentContract {
     interface View {
         void onSuccess(String messageAlert);
+
+        void onError(String messageAlert);
     }
+
 
     interface Presenter {
         void editDataClassroom(Student studentM);

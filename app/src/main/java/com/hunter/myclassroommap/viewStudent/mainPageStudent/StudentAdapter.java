@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -85,6 +88,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView studentId, studentFirstName, studentSecondName;
         ImageButton editStudent, deleteStudent;
+        LinearLayout studentsLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,7 +96,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
             studentFirstName = itemView.findViewById(R.id.student_name);
             studentSecondName = itemView.findViewById(R.id.student_lastname);
             editStudent = itemView.findViewById(R.id.buttonEditStudent);
+            studentsLayout = itemView.findViewById(R.id.studentsLayout);
          //   deleteStudent = itemView.findViewById(R.id.buttonDeleteStudent);
+
+            Animation translate_a = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            studentsLayout.setAnimation(translate_a);
         }
     }
 }

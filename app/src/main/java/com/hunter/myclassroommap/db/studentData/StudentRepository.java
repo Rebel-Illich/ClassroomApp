@@ -98,7 +98,10 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         sqLiteDatabase.delete(dataBaseStudent.TABLE_STUDENT, "ID=?", new String[]{String.valueOf(row_id)});
     }
 
-    public long updateData(Student studentM) {
+
+    public  Single<Student> updateData(Student studentM) {
+        return Single.fromPublisher( publisher -> {
+
         SQLiteDatabase db = dataBaseStudent.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -108,7 +111,16 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         cv.put(ClassroomDatabase.COLUMN_STUDENT_AGE, studentM.getStudentAge());
         cv.put(ClassroomDatabase.COLUMN_STUDENT_GENDER, studentM.getStudentGender());
 
-        return db.update(ClassroomDatabase.TABLE_STUDENT, cv, "ID=?",  new String[]{ String.valueOf(studentM.getStudentId()) });
+            try {
+                long studentId = db.update(ClassroomDatabase.TABLE_STUDENT, cv, "ID=?",  new String[]{ String.valueOf(studentM.getStudentId()) });
+                studentM.setStudentId((int) studentId);
+                publisher.onNext(studentM);
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
+            }
+        });
     }
 
 

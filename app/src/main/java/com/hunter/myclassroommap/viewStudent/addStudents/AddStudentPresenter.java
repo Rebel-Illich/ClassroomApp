@@ -8,6 +8,7 @@ import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.Student;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
 import io.reactivex.schedulers.Schedulers;
 
 public class AddStudentPresenter implements AddStudentContract.Presenter {
@@ -31,6 +32,8 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
                     view.onSuccess("New student is added!");
                 },
                 error -> {
+                view.onError("New student is NOT added!");
+
                 }
             );
     }

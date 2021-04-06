@@ -1,9 +1,13 @@
 package com.hunter.myclassroommap.viewClassroom.updateClassroom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class UpdateClassroomPresenter implements UpdateClassroomContract.Presenter {
 
@@ -15,15 +19,18 @@ public class UpdateClassroomPresenter implements UpdateClassroomContract.Present
         this.repository = new ClassroomRepository(context);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void editDataClassroom(ClassRoom classRoom) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                repository.updateData(classRoom);
-
-                view.onSuccess("Update Classroom!");
-            }
-        }).start();
+                repository.updateData(classRoom)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(classRoom1 -> {
+                                    view.onSuccess("New Class was edit!");
+                                },
+                                error -> {
+                                    view.onError("New Class was NOT edit!");
+                                }
+                        );
     }
 }

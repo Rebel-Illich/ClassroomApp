@@ -61,15 +61,25 @@ public class ClassroomRepository {
         });
     }
 
-    public long updateData(ClassRoom classRoom) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
+    public Single<ClassRoom> updateData(ClassRoom classRoom) {
+        return Single.fromPublisher(publisher ->{
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
 
-        cv.put(ClassroomDatabase.COLUMN_NAME, classRoom.getClassroomName());
-        cv.put(ClassroomDatabase.COLUMN_ROOM_NUMBER, classRoom.getClassroomRoomNumber());
-        cv.put(ClassroomDatabase.COLUMN_FLOOR_NUMBER, classRoom.getClassroomFloor());
-        cv.put(ClassroomDatabase.COLUMN_STUDENTS_COUNT, classRoom.getNumberOfStudents());
+            cv.put(ClassroomDatabase.COLUMN_NAME, classRoom.getClassroomName());
+            cv.put(ClassroomDatabase.COLUMN_ROOM_NUMBER, classRoom.getClassroomRoomNumber());
+            cv.put(ClassroomDatabase.COLUMN_FLOOR_NUMBER, classRoom.getClassroomFloor());
+            cv.put(ClassroomDatabase.COLUMN_STUDENTS_COUNT, classRoom.getNumberOfStudents());
 
-        return db.update(ClassroomDatabase.TABLE_NAME, cv, "ID=?",  new String[]{ String.valueOf(classRoom.getId()) });
+            try {
+                long classId = db.update(ClassroomDatabase.TABLE_NAME, cv, "ID=?",  new String[]{ String.valueOf(classRoom.getId())});
+                classRoom.setId((long) classId);
+                publisher.onNext(classRoom);
+            } catch (Exception e) {
+                publisher.onError(e);
+            } finally {
+                publisher.onComplete();
+            }
+        });
     }
 }

@@ -108,6 +108,24 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     }
 
     @Override
+    public void onError(String messageAlert) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), messageAlert, Toast.LENGTH_LONG).show();
+                        requireActivity().onBackPressed();
+                    }
+                },2000);
+            }
+        });
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getAndSetIntentData();

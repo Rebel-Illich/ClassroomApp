@@ -7,6 +7,8 @@ public interface UpdateClassroomContract {
 
     interface View {
         void onSuccess(String messageAlert);
+
+        void onError(String messageAlert);
     }
 
     interface Presenter {

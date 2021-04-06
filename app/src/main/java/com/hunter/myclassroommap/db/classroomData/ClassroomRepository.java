@@ -9,12 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Single;
 
 public class ClassroomRepository {
 
     private ClassroomDatabase dbHelper;
     private SQLiteDatabase database;
+    private ArrayList<ClassRoom> classrooms;
 
     public ClassroomRepository(Context context) {
         dbHelper = new ClassroomDatabase(context.getApplicationContext());
@@ -82,4 +86,24 @@ public class ClassroomRepository {
             }
         });
     }
+
+    public List<ClassRoom> getListFromDataBase() {
+
+        Cursor cursor = readAllData();
+        if (cursor.getCount() != 0) {
+            classrooms = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                ClassRoom newClass = new ClassRoom();
+                newClass.setId(Long.parseLong(cursor.getString(0)));
+                newClass.setClassroomName(cursor.getString(1));
+                newClass.setClassroomFloor(Long.parseLong(cursor.getString(2)));
+                newClass.setClassroomRoomNumber(Long.parseLong(cursor.getString(3)));
+                newClass.setNumberOfStudents(Long.parseLong(cursor.getString(4)));
+                classrooms.add(newClass);
+            }
+        }
+            cursor.close();
+            return classrooms;
+        }
+
 }

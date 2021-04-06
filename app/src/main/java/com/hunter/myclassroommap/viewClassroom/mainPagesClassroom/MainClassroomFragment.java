@@ -1,5 +1,6 @@
 package com.hunter.myclassroommap.viewClassroom.mainPagesClassroom;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
@@ -25,7 +27,7 @@ import java.util.List;
 
 
 
-public class MainClassroomFragment extends Fragment implements MainPresenter.MainView {
+public class MainClassroomFragment extends Fragment {
 
     public FragmentsNavigator fragmentsNavigator;
 
@@ -77,8 +79,8 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
     @Override
     public void onResume() {
         super.onResume();
-        presenter.restoreDataArrays();
-        classroomAdapter.notifyDataSetChanged();
+        dataList.clear();
+        getStudentsData();
     }
 
     @Override
@@ -87,18 +89,25 @@ public class MainClassroomFragment extends Fragment implements MainPresenter.Mai
         presenter.detachView();
     }
 
-    @Override
-    public void showData(List<ClassRoom> data) {
-        if (data.isEmpty()) {
-            empty_imageView.setVisibility(View.VISIBLE);
-            no_data.setVisibility(View.VISIBLE);
-        } else  {
-            empty_imageView.setVisibility(View.GONE);
-            no_data.setVisibility(View.GONE);
-        }
-        dataList.clear();
-        dataList.addAll(data);
-        classroomAdapter.notifyDataSetChanged();
-    }
 
+    @SuppressLint("CheckResult")
+    private void getStudentsData() {
+        presenter.loadAllClassRoom()
+                .subscribe(
+                        classRooms1 -> {
+                            if (classRooms1.isEmpty()) {
+                               empty_imageView.setVisibility(View.VISIBLE);
+                               no_data.setVisibility(View.VISIBLE);
+                               } else  {
+                               empty_imageView.setVisibility(View.GONE);
+                               no_data.setVisibility(View.GONE);
+                               }
+                            dataList.addAll(classRooms1);
+                            classroomAdapter.notifyDataSetChanged();
+                        },
+                        error ->{
+                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
 }

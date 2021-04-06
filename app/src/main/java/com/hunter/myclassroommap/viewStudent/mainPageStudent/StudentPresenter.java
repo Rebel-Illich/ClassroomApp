@@ -6,6 +6,7 @@ import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.Student;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 
@@ -21,19 +22,27 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
 
     @Override
     public Single<List<Student>> loadAllData(int classroomId) {
-        return Single.fromPublisher(publisher -> {
-            try {
+//        return Single.fromPublisher(publisher -> {
+//            try {
+//                List<Student> studentList = studentRepository.getStudentsFromCurrentClass(classroomId);
+//                if (studentList.isEmpty()) {
+//                    publisher.onError(new RuntimeException("There are not students"));
+//                } else {
+//                    publisher.onNext(studentList);
+//                }
+//            } catch (Exception e) {
+//                publisher.onError(e);
+//
+//            } finally {
+//                publisher.onComplete();
+//            }
+//        });
+        return Single.fromCallable(new Callable<List<Student>>() {
+            @Override
+            public List<Student> call() throws Exception {
                 List<Student> studentList = studentRepository.getStudentsFromCurrentClass(classroomId);
-                if (studentList.isEmpty()) {
-                    publisher.onError(new RuntimeException("There are not students"));
-                } else {
-                    publisher.onNext(studentList);
-                }
-            } catch (Exception e) {
-                publisher.onError(e);
-
-            } finally {
-                publisher.onComplete();
+                if(studentList.isEmpty()) throw new RuntimeException("There are not student!!!");
+                return studentList;
             }
         });
     }

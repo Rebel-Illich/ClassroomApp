@@ -4,42 +4,42 @@ import android.database.Cursor;
 
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class MainPresenter implements MainContractPresenter {
 
     private final ClassroomRepository classroomRepository;
-    private MainView mainListFragment;
 
-    public MainPresenter(ClassroomRepository classroomRepository, MainView mainListFragment) {
+
+    public MainPresenter(ClassroomRepository classroomRepository, MainClassroomFragment mainClassroomFragment) {
         this.classroomRepository = classroomRepository;
-        this.mainListFragment = mainListFragment;
+
+
     }
 
     public void detachView() {
-        mainListFragment = null;
     }
 
-    public void restoreDataArrays() {
-        Cursor cursor = classroomRepository.readAllData();
-        if (cursor.getCount() != 0) {
-            List<ClassRoom> classesList = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                ClassRoom newClass = new ClassRoom();
-                newClass.setId(Long.parseLong(cursor.getString(0)));
-                newClass.setClassroomName(cursor.getString(1));
-                newClass.setClassroomFloor(Long.parseLong(cursor.getString(2)));
-                newClass.setClassroomRoomNumber(Long.parseLong(cursor.getString(3)));
-                newClass.setNumberOfStudents(Long.parseLong(cursor.getString(4)));
-                classesList.add(newClass);
+    public Single<List<ClassRoom>> loadAllClassRoom() {
+        return Single.fromPublisher(publisher -> {
+            try {
+                List<ClassRoom> classRoomList = classroomRepository.getListFromDataBase();
+                if (classRoomList.isEmpty()) {
+                    publisher.onError(new RuntimeException("There are not class"));
+                } else {
+                    publisher.onNext(classRoomList);
+                }
+            } catch (Exception e) {
+                publisher.onError(e);
+
+            } finally {
+                publisher.onComplete();
             }
-            mainListFragment.showData(classesList);
-        }
-    }
-
-    public interface MainView {
-        void showData(List<ClassRoom> data);
+        });
     }
 }

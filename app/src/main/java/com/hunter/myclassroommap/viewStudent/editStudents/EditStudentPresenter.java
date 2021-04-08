@@ -38,15 +38,3 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
                         });
     }
 }
-
-
-//
-//      new Thread(new Runnable() {
-//@Override
-//public void run() {
-//        repository.updateData(studentM);
-//
-//        view.onSuccess("Edit Classroom!");
-//        }
-//        }).start();
-

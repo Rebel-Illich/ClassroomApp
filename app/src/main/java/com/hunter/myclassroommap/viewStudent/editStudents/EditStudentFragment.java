@@ -1,5 +1,6 @@
 package com.hunter.myclassroommap.viewStudent.editStudents;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import com.hunter.myclassroommap.viewStudent.addStudents.GenderSpinnerAdapter;
 
 import java.util.Arrays;
 import java.util.List;
+
+import io.reactivex.schedulers.Schedulers;
 
 public class EditStudentFragment extends Fragment implements EditStudentContract.View {
     private static final String TAG = "EditStudentFragment";
@@ -177,16 +180,18 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
 
     public void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete " + firstNameStudent + " ?");
 
         builder.setTitle("Delete " + firstNameStudent.getText().toString().trim() + " ?");
 
-        builder.setMessage("Are you sure you want to delete " + firstNameStudent.getText().toString() + " ?");
+        builder.setMessage("Are you sure you want to delete " + firstNameStudent.getText().toString().trim() + " ?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @SuppressLint("CheckResult")
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 StudentRepository studentRepository = new StudentRepository(getActivity());
-                studentRepository.deleteOneRow(studentM.getStudentId());
+                studentRepository.deleteOneRow(studentM.getStudentId())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe();
                 requireActivity().onBackPressed();
             }
         });

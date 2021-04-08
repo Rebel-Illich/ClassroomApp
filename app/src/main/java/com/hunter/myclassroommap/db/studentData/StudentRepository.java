@@ -15,7 +15,12 @@ import com.hunter.myclassroommap.viewStudent.mainPageStudent.StudentAndClassCont
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 public class StudentRepository implements StudentAndClassContract.Repository, AddStudentContract.Repository  {
     private ClassroomDatabase dataBaseStudent;
@@ -93,11 +98,28 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         });
     }
 
-    public void deleteOneRow(Integer row_id) {
-        sqLiteDatabase = dataBaseStudent.getWritableDatabase();
-        sqLiteDatabase.delete(dataBaseStudent.TABLE_STUDENT, "ID=?", new String[]{String.valueOf(row_id)});
+    public Completable deleteOneRow(Integer row_id) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                sqLiteDatabase = dataBaseStudent.getWritableDatabase();
+                String whereClause = "ID=?";
+                String[] whereArgs = new String[]{String.valueOf(row_id)};
+                try {
+                    sqLiteDatabase.delete(dataBaseStudent.TABLE_STUDENT, whereClause,  whereArgs);
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+            }
+        });
     }
 
+    public void deleteOne(Integer row_id) {
+        SQLiteDatabase db = dataBaseStudent.getWritableDatabase();
+        db.delete(dataBaseStudent.TABLE_STUDENT, "ID=?", new String[]{String.valueOf(row_id)});
+    }
 
     public  Single<Student> updateData(Student studentM) {
         return Single.fromPublisher( publisher -> {
@@ -124,10 +146,13 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
     }
 
 
-    public List<Student> getAll() {
+    public Single<List<Student>> getAll() {
         dataBaseStudent.getWritableDatabase();
+        return getAllEntries()
+                .map(new Function<Cursor, List<Student>>() {
+                    @Override
+                    public List<Student> apply(@NonNull Cursor cursor) throws Exception {
         List<Student> students = new ArrayList<>();
-        Cursor cursor = getAllEntries();
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ID_STUDENT));
             String firstName = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME_STUDENT));
@@ -140,34 +165,41 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         }
         cursor.close();
         return students;
+                    }
+                });
     }
 
-    public Cursor getAllEntries() {
+    public Single<Cursor> getAllEntries() {
         SQLiteDatabase db = dataBaseStudent.getWritableDatabase();
         String[] columns = new String[]{ClassroomDatabase.COLUMN_ID_STUDENT, ClassroomDatabase.COLUMN_NAME_STUDENT,
                 ClassroomDatabase.COLUMN_LAST_NAME, ClassroomDatabase.COLUMN_MIDDLE_NAME, ClassroomDatabase.COLUMN_CLASSROOM_ID, ClassroomDatabase.COLUMN_STUDENT_GENDER, ClassroomDatabase.COLUMN_STUDENT_AGE};
-        return db.query(ClassroomDatabase.TABLE_STUDENT, columns, null, null, null, null, null, null);
+        return Single.just(db.query(ClassroomDatabase.TABLE_STUDENT, columns, null, null, null, null, ClassroomDatabase.COLUMN_LAST_NAME));
     }
 
-    public List<ClassRoom> getAllClassRoom() {
+    public Single<List<ClassRoom>> getAllClassRoom() {
         dataBaseStudent.getWritableDatabase();
-        List<ClassRoom> classrooms = new ArrayList<>();
-        Cursor cursor = getClassRoom();
-        while (cursor.moveToNext()) {
-            String classroomName = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME));
-            long classroomRoomNumber = cursor.getLong(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOM_NUMBER));
-            long numberOfStudents = cursor.getLong(cursor.getColumnIndex(ClassroomDatabase.COLUMN_STUDENTS_COUNT));
-            long classroomFloor = cursor.getLong(cursor.getColumnIndex(ClassroomDatabase.COLUMN_FLOOR_NUMBER));
-            classrooms.add(new ClassRoom(classroomName, classroomRoomNumber, numberOfStudents, classroomFloor));
-        }
-        cursor.close();
-        return classrooms;
+        return getClassRoom()
+                .map(new Function<Cursor, List<ClassRoom>>() {
+                    @Override
+                    public List<ClassRoom> apply(@NonNull Cursor cursor) throws Exception {
+                        List<ClassRoom> classrooms = new ArrayList<>();
+                        while (cursor.moveToNext()) {
+                            String classroomName = cursor.getString(cursor.getColumnIndex(ClassroomDatabase.COLUMN_NAME));
+                            long classroomRoomNumber = cursor.getLong(cursor.getColumnIndex(ClassroomDatabase.COLUMN_ROOM_NUMBER));
+                            long numberOfStudents = cursor.getLong(cursor.getColumnIndex(ClassroomDatabase.COLUMN_STUDENTS_COUNT));
+                            long classroomFloor = cursor.getLong(cursor.getColumnIndex(ClassroomDatabase.COLUMN_FLOOR_NUMBER));
+                            classrooms.add(new ClassRoom(classroomName, classroomRoomNumber, numberOfStudents, classroomFloor));
+                        }
+                        cursor.close();
+                        return classrooms;
+                    }
+                });
     }
 
-    public Cursor getClassRoom() {
-        SQLiteDatabase db = dataBaseStudent.getWritableDatabase();
-        String[] columns = new String[]{ClassroomDatabase.COLUMN_ID, ClassroomDatabase.COLUMN_NAME,
+    public Single<Cursor> getClassRoom() {
+                SQLiteDatabase db = dataBaseStudent.getWritableDatabase();
+                String[] columns = new String[]{ClassroomDatabase.COLUMN_ID, ClassroomDatabase.COLUMN_NAME,
                 ClassroomDatabase.COLUMN_ROOM_NUMBER, ClassroomDatabase.COLUMN_STUDENTS_COUNT, ClassroomDatabase.COLUMN_FLOOR_NUMBER};
-        return db.query(ClassroomDatabase.TABLE_NAME, columns, null, null, null, null, null);
+        return Single.just(db.query(ClassroomDatabase.TABLE_NAME, columns, null, null, null, null, ClassroomDatabase.COLUMN_NAME));
     }
 }

@@ -12,7 +12,11 @@ import com.hunter.myclassroommap.model.Student;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
 
 public class ClassroomRepository {
 
@@ -35,9 +39,22 @@ public class ClassroomRepository {
         return cursor;
     }
 
-    public void deleteOneRow(long row_id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(dbHelper.TABLE_NAME, "ID=?", new String[]{String.valueOf(row_id)});
+    public Completable deleteOneRow(long row_id) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                String whereClause = "ID=?";
+                String[] whereArgs = new String[]{String.valueOf(row_id)};
+                try {
+                    db.delete(dbHelper.TABLE_NAME, whereClause,  whereArgs);
+                } catch (Exception e) {
+                    emitter.onError(e);
+                } finally {
+                    emitter.onComplete();
+                }
+            }
+        });
     }
 
     public void deleteAllData() {

@@ -8,6 +8,7 @@ import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomF
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 
@@ -18,28 +19,37 @@ public class MainPresenter implements MainContractPresenter {
 
     public MainPresenter(ClassroomRepository classroomRepository, MainClassroomFragment mainClassroomFragment) {
         this.classroomRepository = classroomRepository;
-
-
     }
 
     public void detachView() {
     }
 
     public Single<List<ClassRoom>> loadAllClassRoom() {
-        return Single.fromPublisher(publisher -> {
-            try {
+//        return Single.fromPublisher(publisher -> {
+//            try {
+//                List<ClassRoom> classRoomList = classroomRepository.getListFromDataBase();
+//                if (classRoomList.isEmpty()) {
+//                    publisher.onError(new RuntimeException("There are not class"));
+//                } else {
+//                    publisher.onNext(classRoomList);
+//                }
+//            } catch (Exception e) {
+//                publisher.onError(e);
+//
+//            } finally {
+//                publisher.onComplete();
+//            }
+//        });
+        return Single.fromCallable(new Callable<List<ClassRoom>>() {
+            @Override
+            public List<ClassRoom> call() throws Exception {
                 List<ClassRoom> classRoomList = classroomRepository.getListFromDataBase();
-                if (classRoomList.isEmpty()) {
-                    publisher.onError(new RuntimeException("There are not class"));
-                } else {
-                    publisher.onNext(classRoomList);
+                if(classRoomList.isEmpty()){throw new RuntimeException("There are not class");
                 }
-            } catch (Exception e) {
-                publisher.onError(e);
+                return classRoomList;
 
-            } finally {
-                publisher.onComplete();
             }
         });
+
     }
 }

@@ -24,6 +24,8 @@ import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigatorContract;
 
+import io.reactivex.schedulers.Schedulers;
+
 
 public class UpdateClassroomFragment extends Fragment implements UpdateClassroomContract.View {
 
@@ -156,7 +158,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
 
             editClassroomPresenter.editDataClassroom(classRoom);
 
-                progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
+            progressDialog = ProgressDialog.show(getActivity(),"Updating Classroom","updating...");
             } catch(NumberFormatException ex){
                 Toast.makeText(getActivity(), "Do not write long numbers!", Toast.LENGTH_SHORT).show();
             }
@@ -171,7 +173,9 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ClassroomRepository classroomRepository = new ClassroomRepository(getActivity());
-                classroomRepository.deleteOneRow(classRoom.getId());
+                classroomRepository.deleteOneRow(classRoom.getId())
+                        .subscribeOn(Schedulers .io())
+                        .subscribe();
                 requireActivity().onBackPressed();
             }
         });

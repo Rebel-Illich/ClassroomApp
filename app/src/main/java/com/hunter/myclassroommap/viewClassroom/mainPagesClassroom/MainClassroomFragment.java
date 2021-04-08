@@ -27,7 +27,7 @@ import java.util.List;
 
 
 
-public class MainClassroomFragment extends Fragment {
+public class MainClassroomFragment extends Fragment{
 
     public FragmentsNavigator fragmentsNavigator;
 

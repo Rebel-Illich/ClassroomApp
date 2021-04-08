@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     private RecyclerView recyclerViewStudents;
     private ArrayList<Student> currentClassModel = new ArrayList<>();
     private ClassRoom classRoom;
+    private ImageView empty_imageView;
     private Integer classroomId;
     private final List<Student> studentList = new ArrayList<Student>();
     private ProgressDialog progressDialog;
@@ -66,6 +68,7 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         currentClassRoom = view.findViewById(R.id.room_number);
         currentClassFloor = view.findViewById(R.id.show_floor_text);
         currentClassStudents = view.findViewById(R.id.count_students);
+        empty_imageView = view.findViewById(R.id.empty_imageV);
         floatingActionButton = view.findViewById(R.id.floatingActionButtonStudents);
         recyclerViewStudents = view.findViewById(R.id.recyclerViewStudents);
         recyclerViewStudents.setHasFixedSize(true);
@@ -113,6 +116,11 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         studentPresenter.loadAllData((int) classRoom.getId())
                 .subscribe(
                         students -> {
+                            if (students.isEmpty()) {
+                                empty_imageView.setVisibility(View.VISIBLE);
+                            } else  {
+                                empty_imageView.setVisibility(View.GONE);
+                            }
                             studentList.addAll(students);
                             studentAdapter.notifyDataSetChanged();
                         },

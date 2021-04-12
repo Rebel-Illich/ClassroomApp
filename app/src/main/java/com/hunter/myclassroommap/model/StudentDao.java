@@ -14,10 +14,10 @@ import io.reactivex.Single;
 @Dao
 public interface StudentDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     long insertStudent(Student studentModel);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     void updateStudents(Student studentM);
 
     @Delete

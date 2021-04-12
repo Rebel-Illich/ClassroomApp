@@ -46,6 +46,8 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
         return inflater.inflate(R.layout.fragment_searchby, container, false);
     }
 
@@ -53,15 +55,9 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
-
         searchView = view.findViewById(R.id.edit_search_view_query);
 
         presenter = new SearchByPresenter(this, requireContext());
-
-        recyclerView = view.findViewById(R.id.search_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         spinner = view.findViewById(R.id.spinner_search_by);
 
@@ -107,6 +103,11 @@ public class SearchByFragment extends Fragment implements SearchByContract.View,
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+
+        recyclerView = view.findViewById(R.id.search_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 
     @Override

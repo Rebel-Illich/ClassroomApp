@@ -1,12 +1,25 @@
 package com.hunter.myclassroommap.model;
 
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
+
+@Entity(tableName = "student_table")
 public class Student {
+
+    @PrimaryKey(autoGenerate = true)
     Integer studentId;
+
     String firstName;
     String lastName;
     String middleName;
     String studentGender;
     Integer studentAge;
+
+    @ColumnInfo(name = "classroomId")
     Long classroomId;
 
     public Student(Integer studentId, String firstName, String lastName, String middleName, String studentGender, Integer studentAge, Long classroomId) {
@@ -18,7 +31,6 @@ public class Student {
         this.studentAge = studentAge;
         this.classroomId = classroomId;
     }
-
 
     public Integer getStudentId() {
         return studentId;

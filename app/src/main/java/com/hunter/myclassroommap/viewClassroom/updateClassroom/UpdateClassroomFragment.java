@@ -173,7 +173,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ClassroomRepository classroomRepository = new ClassroomRepository(getActivity());
-                classroomRepository.deleteOneRow(classRoom.getId())
+                classroomRepository.deleteOneRow(classRoom)
                         .subscribeOn(Schedulers .io())
                         .subscribe();
                 requireActivity().onBackPressed();

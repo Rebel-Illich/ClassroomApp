@@ -189,7 +189,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 StudentRepository studentRepository = new StudentRepository(getActivity());
-                studentRepository.deleteOneRow(studentM.getStudentId())
+                studentRepository.deleteOneRow(studentM)
                         .subscribeOn(Schedulers.io())
                         .subscribe();
                 requireActivity().onBackPressed();

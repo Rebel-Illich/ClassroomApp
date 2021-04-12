@@ -22,6 +22,13 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
 
     @Override
     public Single<List<Student>> loadAllData(int classroomId) {
+        return studentRepository.getStudentsFromCurrentClass(classroomId)
+                .flatMap(list -> {
+                    if (list.isEmpty()) {
+                        throw new RuntimeException("There are no class");
+                    } else return Single.just(list);
+                });
+
 //        return Single.fromPublisher(publisher -> {
 //            try {
 //                List<Student> studentList = studentRepository.getStudentsFromCurrentClass(classroomId);
@@ -37,17 +44,13 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
 //                publisher.onComplete();
 //            }
 //        });
-        return Single.fromCallable(new Callable<List<Student>>() {
-            @Override
-            public List<Student> call() throws Exception {
-                List<Student> studentList = studentRepository.getStudentsFromCurrentClass(classroomId);
-                if(studentList.isEmpty()) throw new RuntimeException("There are not student!!!");
-                return studentList;
-            }
-        });
-    }
-
-    @Override
-    public void alertToDeleteClass(int position) {
+//        return Single.fromCallable(new Callable<List<Student>>() {
+//            @Override
+//            public List<Student> call() throws Exception {
+//                List<Student> studentList = studentRepository.getStudentsFromCurrentClass(classroomId);
+//                if(studentList.isEmpty()) throw new RuntimeException("There are not student!!!");
+//                return studentList;
+//            }
+//        });
     }
 }

@@ -49,7 +49,7 @@ public class MainClassroomActivity extends AppCompatActivity{
                 mainScreenItem.setVisible(true);
                 return true;
             case R.id.search_menu:
-                searchItem.setVisible(true);
+                searchItem.setVisible(false);
                 mainScreenItem.setVisible(false);
                 fragmentsNavigator.mainClass();
                 return true;

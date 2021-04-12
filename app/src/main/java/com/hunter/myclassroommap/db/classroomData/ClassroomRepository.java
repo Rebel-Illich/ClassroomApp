@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.hunter.myclassroommap.model.ClassRoom;
+import com.hunter.myclassroommap.model.ClassRoomDao;
 import com.hunter.myclassroommap.model.Student;
 
 import java.util.ArrayList;
@@ -23,104 +24,38 @@ public class ClassroomRepository {
     private ClassroomDatabase dbHelper;
     private SQLiteDatabase database;
     private ArrayList<ClassRoom> classrooms;
+    private ClassroomDb db;
+    private ClassRoomDao classRoomDao;
 
     public ClassroomRepository(Context context) {
         dbHelper = new ClassroomDatabase(context.getApplicationContext());
+        db = ClassroomDb.getDatabase(context);
+        classRoomDao = db.classRoomDao();
     }
 
-    public Cursor readAllData() {
-        String query = "SELECT * FROM " + ClassroomDatabase.TABLE_NAME;
-        database = dbHelper.getReadableDatabase();
-
-        Cursor cursor = null;
-        if(database != null) {
-             cursor = database.rawQuery(query, null);
-        }
-        return cursor;
-    }
-
-    public Completable deleteOneRow(long row_id) {
-        return Completable.create(new CompletableOnSubscribe() {
-            @Override
-            public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                String whereClause = "ID=?";
-                String[] whereArgs = new String[]{String.valueOf(row_id)};
-                try {
-                    db.delete(dbHelper.TABLE_NAME, whereClause,  whereArgs);
-                } catch (Exception e) {
-                    emitter.onError(e);
-                } finally {
-                    emitter.onComplete();
-                }
-            }
-        });
-    }
-
-    public void deleteAllData() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM " + dbHelper.TABLE_NAME);
+    public Completable deleteOneRow(ClassRoom classRoom) {
+       return Completable.create(emitter -> {
+          classRoomDao.deleteOneRow(classRoom);
+          emitter.onComplete();
+       });
     }
 
     public Single<ClassRoom> insertData(ClassRoom classRoom) {
-        return Single.fromPublisher( publisher -> {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(ClassroomDatabase.COLUMN_NAME, classRoom.getClassroomName());
-        cv.put(ClassroomDatabase.COLUMN_ROOM_NUMBER, classRoom.getClassroomRoomNumber());
-        cv.put(ClassroomDatabase.COLUMN_FLOOR_NUMBER, classRoom.getClassroomFloor());
-        cv.put(ClassroomDatabase.COLUMN_STUDENTS_COUNT, classRoom.getNumberOfStudents());
-            try {
-                long studentId = db.insert(ClassroomDatabase.TABLE_NAME, null, cv);
-                classRoom.setId((long) studentId);
-                publisher.onNext(classRoom);
-            } catch (Exception e) {
-                publisher.onError(e);
-            } finally {
-                publisher.onComplete();
-            }
+        return Single.create(emitter -> {
+            long id = classRoomDao.insertClassroom(classRoom);
+            classRoom.setId(id);
+            emitter.onSuccess(classRoom);
         });
     }
 
     public Single<ClassRoom> updateData(ClassRoom classRoom) {
-        return Single.fromPublisher(publisher ->{
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-
-            cv.put(ClassroomDatabase.COLUMN_NAME, classRoom.getClassroomName());
-            cv.put(ClassroomDatabase.COLUMN_ROOM_NUMBER, classRoom.getClassroomRoomNumber());
-            cv.put(ClassroomDatabase.COLUMN_FLOOR_NUMBER, classRoom.getClassroomFloor());
-            cv.put(ClassroomDatabase.COLUMN_STUDENTS_COUNT, classRoom.getNumberOfStudents());
-
-            try {
-                long classId = db.update(ClassroomDatabase.TABLE_NAME, cv, "ID=?",  new String[]{ String.valueOf(classRoom.getId())});
-                classRoom.setId((long) classId);
-                publisher.onNext(classRoom);
-            } catch (Exception e) {
-                publisher.onError(e);
-            } finally {
-                publisher.onComplete();
-            }
+        return Single.create(emitter -> {
+            classRoomDao.updateClassroom(classRoom);
+            emitter.onSuccess(classRoom);
         });
     }
 
-    public List<ClassRoom> getListFromDataBase() {
-
-        Cursor cursor = readAllData();
-        if (cursor.getCount() != 0) {
-            classrooms = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                ClassRoom newClass = new ClassRoom();
-                newClass.setId(Long.parseLong(cursor.getString(0)));
-                newClass.setClassroomName(cursor.getString(1));
-                newClass.setClassroomFloor(Long.parseLong(cursor.getString(2)));
-                newClass.setClassroomRoomNumber(Long.parseLong(cursor.getString(3)));
-                newClass.setNumberOfStudents(Long.parseLong(cursor.getString(4)));
-                classrooms.add(newClass);
-            }
+    public Single<List<ClassRoom>> getListFromDataBase() {
+        return classRoomDao.getListClassroom();
         }
-            cursor.close();
-            return classrooms;
-        }
-
 }

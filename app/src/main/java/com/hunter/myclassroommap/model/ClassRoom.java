@@ -1,8 +1,16 @@
 package com.hunter.myclassroommap.model;
 
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "classroom_table")
 public class ClassRoom {
 
+
+    @PrimaryKey(autoGenerate = true)
     private long id;
+
     private String classroomName;
     private long classroomRoomNumber;
     private long classroomFloor;

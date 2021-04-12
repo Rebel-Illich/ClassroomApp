@@ -19,6 +19,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        tools:ignore="MissingConstraints" />
+
     <EditText
         android:id="@+id/add_first_name_student"
         android:layout_width="208dp"

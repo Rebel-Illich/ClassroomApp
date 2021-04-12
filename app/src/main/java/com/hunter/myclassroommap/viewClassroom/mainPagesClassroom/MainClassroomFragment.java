@@ -25,6 +25,8 @@ import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainClassroomFragment extends Fragment{
@@ -89,10 +91,11 @@ public class MainClassroomFragment extends Fragment{
         presenter.detachView();
     }
 
-
     @SuppressLint("CheckResult")
     private void getStudentsData() {
         presenter.loadAllClassRoom()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         classRooms1 -> {
                             if (classRooms1.isEmpty()) {

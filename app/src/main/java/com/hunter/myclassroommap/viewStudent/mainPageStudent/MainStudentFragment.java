@@ -30,6 +30,9 @@ import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavig
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class MainStudentFragment extends Fragment implements StudentAndClassContract.View, StudentAdapter.CallBackPosition{
 
     private FragmentsNavigator fragmentsNavigator;
@@ -114,6 +117,8 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     @SuppressLint("CheckResult")
     private void getStudentsData() {
         studentPresenter.loadAllData((int) classRoom.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         students -> {
                             if (students.isEmpty()) {
@@ -143,7 +148,7 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         progressDialog = ProgressDialog.show(getActivity(),"Deleting student","deleting...");
-                        studentPresenter.alertToDeleteClass(position);
+ //                       studentPresenter.alertToDeleteClass(position);
                         studentAdapter.notifyItemRemoved(position);
                         studentAdapter.notifyDataSetChanged();
                     }

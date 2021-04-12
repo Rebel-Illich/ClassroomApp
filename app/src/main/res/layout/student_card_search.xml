@@ -16,21 +16,8 @@
         >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:paddingTop="15dp"
-            android:textSize="15sp"
-            android:text="Full Name:"
-            android:textStyle="italic"
-            android:layout_gravity="center"
-            android:textColor="@color/black">
-
-        </TextView>
-
-        <TextView
             android:id="@+id/students_full_name"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:padding="10dp"
             android:paddingTop="15dp"
@@ -38,7 +25,32 @@
             android:layout_gravity="center"
             android:textColor="@color/black"
             >
+        </TextView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:paddingTop="15dp"
+            android:textSize="15sp"
+            android:text="Age:"
+            android:textStyle="italic"
+            android:layout_gravity="center"
+            android:textColor="@color/black">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/students_age"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:paddingTop="15dp"
+            android:textSize="15sp"
+            android:text="11"
+            android:textStyle="italic"
+            android:layout_gravity="center"
+            android:textColor="@color/black">
         </TextView>
     </LinearLayout>
 

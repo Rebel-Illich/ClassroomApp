@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.Student;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,8 @@ public class SearchByStudentsRecycler extends RecyclerView.Adapter<SearchByStude
         Student student = studentList.get(position);
 
         holder.studentName.setText( student.getLastName() + " " + student.getFirstName());
+        holder.studentAge.setText(student.getStudentAge().toString());
+
     }
 
     @Override
@@ -88,9 +92,11 @@ public class SearchByStudentsRecycler extends RecyclerView.Adapter<SearchByStude
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final TextView studentName;
+        TextView studentAge;
 
         public ViewHolder(@NonNull View itemView, List<Student> filterStudentList, CallBackAdapter callBackAdapter) {
             super(itemView);
+            studentAge = itemView.findViewById(R.id.students_age);
 
             studentName = itemView.findViewById(R.id.students_full_name);
             itemView.setOnClickListener(new View.OnClickListener() {

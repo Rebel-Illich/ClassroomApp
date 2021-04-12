@@ -27,6 +27,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
 
     private AddStudentContract.Presenter addStudentPresenter;
     private TextView firstNameStudent, lastNameStudent, middleNameStudent, ageStudent;
+
     private Spinner genderSpinner;
     private String[] spinnerValueGender;
     private GenderSpinnerAdapter genderSpinnerAdapter;

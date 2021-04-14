@@ -26,4 +26,7 @@ public interface ClassRoomDao {
 
     @Query("SELECT * FROM classroom_table")
      Single<List<ClassRoom>>  getListClassroom();
+
+    @Query("UPDATE classroom_table SET numberOfStudents = :count WHERE id = :id")
+    void updateCount(int id, int count);
 }

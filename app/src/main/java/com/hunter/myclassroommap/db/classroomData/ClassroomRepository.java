@@ -21,14 +21,11 @@ import io.reactivex.annotations.NonNull;
 
 public class ClassroomRepository {
 
-    private ClassroomDatabase dbHelper;
-    private SQLiteDatabase database;
     private ArrayList<ClassRoom> classrooms;
     private ClassroomDb db;
     private ClassRoomDao classRoomDao;
 
     public ClassroomRepository(Context context) {
-        dbHelper = new ClassroomDatabase(context.getApplicationContext());
         db = ClassroomDb.getDatabase(context);
         classRoomDao = db.classRoomDao();
     }
@@ -58,4 +55,12 @@ public class ClassroomRepository {
     public Single<List<ClassRoom>> getListFromDataBase() {
         return classRoomDao.getListClassroom();
         }
+
+    public Single<Boolean> updateClassroomStudentsCount(int classId, int countOfStudents) {
+        return Single.create(emitter ->
+        {
+            classRoomDao.updateCount(classId, countOfStudents);
+            emitter.onSuccess(true);
+        });
+    }
 }

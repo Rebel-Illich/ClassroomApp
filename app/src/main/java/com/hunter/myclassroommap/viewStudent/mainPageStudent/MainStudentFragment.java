@@ -30,6 +30,8 @@ import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavig
 
 import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -95,10 +97,12 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         recyclerViewStudents.setAdapter(studentAdapter);
     }
 
+    @SuppressLint("CheckResult")
     private void getInfoAboutCurrClassroom() {
         currentClassName.setText(classRoom.getClassroomName());
         currentClassRoom.setText(String.valueOf(classRoom.getClassroomRoomNumber()));
         currentClassFloor.setText(String.valueOf(classRoom.getClassroomFloor()));
+   //   currentClassStudents.setText(String.valueOf(studentPresenter.getNum((int) classRoom.getId())));
         currentClassStudents.setText(String.valueOf(classRoom.getNumberOfStudents()));
     }
 

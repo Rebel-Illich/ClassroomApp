@@ -3,9 +3,13 @@ package com.hunter.myclassroommap.viewStudent.addStudents;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
+import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
+
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -28,12 +32,13 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
         repository.addStudent(studentModel)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(student -> repository.getNumFiles((int) classId))
+                .flatMap(count -> repository.updateClassroomStudentsCount((int) classId, (int) count))
             .subscribe(student -> {
                     view.onSuccess("New student is added!");
                 },
                 error -> {
                 view.onError("New student is NOT added!");
-
                 }
             );
     }

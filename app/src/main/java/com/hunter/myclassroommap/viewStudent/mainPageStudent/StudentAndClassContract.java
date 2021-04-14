@@ -18,5 +18,6 @@ public interface StudentAndClassContract {
 
     interface Repository{
         Single<List<Student>> getStudentsFromCurrentClass(int classroomId);
+        Single<Integer> getNumFiles(int classroomId);
     }
 }

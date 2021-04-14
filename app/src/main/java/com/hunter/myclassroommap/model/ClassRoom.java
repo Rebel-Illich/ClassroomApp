@@ -49,7 +49,6 @@ public class ClassRoom {
     public void setClassroomRoomNumber(long classroomRoomNumber) {
         this.classroomRoomNumber = classroomRoomNumber;
     }
-
     public long getClassroomFloor() {
         return classroomFloor;
     }

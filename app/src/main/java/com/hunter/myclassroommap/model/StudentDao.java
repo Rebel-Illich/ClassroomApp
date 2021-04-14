@@ -31,4 +31,7 @@ public interface StudentDao {
 
     @Query("SELECT * FROM student_table WHERE classroomId = :classroomId")
     Single<List<Student>> getStudentsCurrentClass(int classroomId);
+
+    @Query("SELECT COUNT(studentId) FROM student_table WHERE classroomId = :classroomId")
+    Single<Integer> getCount(int classroomId);
 }

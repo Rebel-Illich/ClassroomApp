@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
 public class Student {
 
     @PrimaryKey(autoGenerate = true)
-    Integer studentId;
+    long studentId;
 
     String firstName;
     String lastName;
@@ -22,7 +22,7 @@ public class Student {
     @ColumnInfo(name = "classroomId")
     Long classroomId;
 
-    public Student(Integer studentId, String firstName, String lastName, String middleName, String studentGender, Integer studentAge, Long classroomId) {
+    public Student(long studentId, String firstName, String lastName, String middleName, String studentGender, Integer studentAge, Long classroomId) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,11 +32,11 @@ public class Student {
         this.classroomId = classroomId;
     }
 
-    public Integer getStudentId() {
+    public long getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Integer studentId) {
+    public void setStudentId(long studentId) {
         this.studentId = studentId;
     }
 

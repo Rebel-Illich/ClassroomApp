@@ -18,5 +18,9 @@ public interface AddStudentContract {
 
     interface Repository{
         Single<Student> addStudent(Student studentModel);
+
+        Single<Boolean> updateClassroomStudentsCount(int classId, int countOfStudents);
+
+        Single<Integer> getNumFiles(int classroomId);
     }
 }

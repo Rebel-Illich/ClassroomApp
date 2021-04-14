@@ -26,8 +26,14 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
                 .flatMap(list -> {
                     if (list.isEmpty()) {
                         throw new RuntimeException("There are no class");
-                    } else return Single.just(list);
+                    } else
+                        return Single.just(list);
                 });
+    }
+
+        public Single<Integer> getNum (int classroomId){
+            return studentRepository.getNumFiles(classroomId);
+        }
 
 //        return Single.fromPublisher(publisher -> {
 //            try {
@@ -52,5 +58,4 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
 //                return studentList;
 //            }
 //        });
-    }
 }

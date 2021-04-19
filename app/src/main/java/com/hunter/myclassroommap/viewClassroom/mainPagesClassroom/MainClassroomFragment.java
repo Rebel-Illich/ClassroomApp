@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,22 +21,20 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hunter.myclassroommap.R;
-import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.mainClassroom.MainPresenter;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.mainClassViewModel.MainClassroomViewModel;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.mainClassViewModel.MainClassroomViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import java.util.Objects;
 
 
 public class MainClassroomFragment extends Fragment{
 
     public FragmentsNavigator fragmentsNavigator;
 
-    private MainPresenter presenter;
+    MainClassroomViewModel classroomViewModel;
 
     FloatingActionButton add_button;
     RecyclerView recyclerView;
@@ -60,7 +61,9 @@ public class MainClassroomFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new MainPresenter(new ClassroomRepository(requireContext()), this);
+        classroomViewModel =
+                new ViewModelProvider(this, new MainClassroomViewModelFactory(Objects.requireNonNull(getActivity()).getApplication())).get(MainClassroomViewModel.class);
+
         recyclerView = view.findViewById(R.id.recyclerView);
 
         add_button = view.findViewById(R.id.add_button);
@@ -76,6 +79,24 @@ public class MainClassroomFragment extends Fragment{
         classroomAdapter = new ClassroomAdapter(fragmentsNavigator, getContext(), dataList);
         recyclerView.setAdapter(classroomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        initObserver();
+    }
+
+    private void initObserver() {
+        classroomViewModel.getClassRoomLD().observe(getViewLifecycleOwner(), list -> {
+            if (list.isEmpty()) {
+                empty_imageView.setVisibility(View.VISIBLE);
+                no_data.setVisibility(View.VISIBLE);
+            } else {
+                empty_imageView.setVisibility(View.GONE);
+                no_data.setVisibility(View.GONE);
+            }
+            dataList.addAll(list);
+            classroomAdapter.notifyDataSetChanged();
+        });
+        classroomViewModel.errorCR.observe(getViewLifecycleOwner(), error -> {
+            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -84,33 +105,10 @@ public class MainClassroomFragment extends Fragment{
         dataList.clear();
         getStudentsData();
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        presenter.detachView();
+        @SuppressLint("CheckResult")
+        private void getStudentsData() {
+            classroomViewModel.updateClassrooms();
+        }
     }
 
-    @SuppressLint("CheckResult")
-    private void getStudentsData() {
-        presenter.loadAllClassRoom()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                        classRooms1 -> {
-                            if (classRooms1.isEmpty()) {
-                               empty_imageView.setVisibility(View.VISIBLE);
-                               no_data.setVisibility(View.VISIBLE);
-                               } else  {
-                               empty_imageView.setVisibility(View.GONE);
-                               no_data.setVisibility(View.GONE);
-                               }
-                            dataList.addAll(classRooms1);
-                            classroomAdapter.notifyDataSetChanged();
-                        },
-                        error ->{
-                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                );
-    }
-}
+

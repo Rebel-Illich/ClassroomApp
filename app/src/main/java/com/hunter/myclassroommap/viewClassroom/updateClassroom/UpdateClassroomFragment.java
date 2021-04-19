@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hunter.myclassroommap.R;
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigatorContract;
@@ -172,7 +173,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ClassroomRepository classroomRepository = new ClassroomRepository(getActivity());
+                ClassroomRepository classroomRepository = new ClassroomRepository(ClassroomDb.getDatabase(null, null));
                 classroomRepository.deleteOneRow(classRoom)
                         .subscribeOn(Schedulers .io())
                         .subscribe();

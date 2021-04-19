@@ -3,6 +3,7 @@ package com.hunter.myclassroommap.searchBy;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.Student;
@@ -20,7 +21,7 @@ public class SearchByPresenter implements SearchByContract.Presenter {
 
     public SearchByPresenter(SearchByContract.View callBack, Context context) {
         this.view = callBack;
-        studentRepository = new StudentRepository(context);
+        studentRepository = new StudentRepository(ClassroomDb.getDatabase(context, null));
     }
 
     @SuppressLint("CheckResult")

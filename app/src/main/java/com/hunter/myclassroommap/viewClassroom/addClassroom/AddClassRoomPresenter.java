@@ -3,6 +3,7 @@ package com.hunter.myclassroommap.viewClassroom.addClassroom;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 
@@ -16,7 +17,7 @@ public class AddClassRoomPresenter implements AddClassRoomContract.Presenter {
     private AddClassRoomContract.View view;
 
     public AddClassRoomPresenter(AddClassRoomContract.View view, Context context) {
-        this.repository = new ClassroomRepository(context);
+        this.repository = new ClassroomRepository(ClassroomDb.getDatabase(context, null));
         this.view = view;
     }
 

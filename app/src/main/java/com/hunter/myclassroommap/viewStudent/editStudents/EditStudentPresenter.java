@@ -3,6 +3,7 @@ package com.hunter.myclassroommap.viewStudent.editStudents;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.Student;
 
@@ -18,7 +19,7 @@ public class EditStudentPresenter implements EditStudentContract.Presenter {
 
     public EditStudentPresenter(EditStudentContract.View view, Context context) {
         this.view = view;
-        this.repository = new StudentRepository(context);
+        this.repository = new StudentRepository(ClassroomDb.getDatabase(context, null));
     }
 
 

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.hunter.myclassroommap.R;
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.Student;
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
@@ -188,7 +189,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
             @SuppressLint("CheckResult")
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                StudentRepository studentRepository = new StudentRepository(getActivity());
+                StudentRepository studentRepository = new StudentRepository(ClassroomDb.getDatabase(null, null));
                 studentRepository.deleteOneRow(studentM)
                         .subscribeOn(Schedulers.io())
                         .subscribe();

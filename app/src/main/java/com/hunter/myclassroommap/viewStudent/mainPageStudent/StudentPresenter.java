@@ -2,6 +2,7 @@ package com.hunter.myclassroommap.viewStudent.mainPageStudent;
 
 import android.content.Context;
 
+import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.Student;
 
@@ -17,7 +18,7 @@ public class StudentPresenter implements StudentAndClassContract.Presenter  {
 
     public StudentPresenter(StudentAndClassContract.View view, Context context) {
         this.view = view;
-        this.studentRepository = new StudentRepository(context);
+        this.studentRepository = new StudentRepository(ClassroomDb.getDatabase(context, null));
     }
 
     @Override

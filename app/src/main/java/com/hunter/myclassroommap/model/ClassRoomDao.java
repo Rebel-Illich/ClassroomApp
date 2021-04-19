@@ -1,5 +1,6 @@
 package com.hunter.myclassroommap.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -25,8 +26,14 @@ public interface ClassRoomDao {
     void deleteOneRow(ClassRoom classRoom);
 
     @Query("SELECT * FROM classroom_table")
-     Single<List<ClassRoom>>  getListClassroom();
+    Single<List<ClassRoom>>  getListClassroom();
+
+    @Query("SELECT * FROM classroom_table ORDER BY classroomName ASC")
+    LiveData<List<ClassRoom>> getListClassroomLD();
 
     @Query("UPDATE classroom_table SET numberOfStudents = :count WHERE id = :id")
     void updateCount(int id, int count);
+
+    @Query("SELECT * FROM classroom_table")
+    LiveData<List<ClassRoom>> searchAllProducts();
 }

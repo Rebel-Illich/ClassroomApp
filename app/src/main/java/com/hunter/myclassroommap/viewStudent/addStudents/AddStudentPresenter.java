@@ -22,7 +22,7 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
 
     public AddStudentPresenter(AddStudentContract.View view, Context context) {
         this.view = view;
-        this.repository = new StudentRepository(context);
+        this.repository = new StudentRepository(ClassroomDb.getDatabase(context, null));
     }
 
     @SuppressLint("CheckResult")
@@ -33,7 +33,7 @@ public class AddStudentPresenter implements AddStudentContract.Presenter {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(student -> repository.getNumFiles((int) classId))
-                .flatMap(count -> repository.updateClassroomStudentsCount((int) classId, (int) count))
+       //         .flatMap(count -> repository.updateClassRoomStudentCount((int) classId, count))
             .subscribe(student -> {
                     view.onSuccess("New student is added!");
                 },

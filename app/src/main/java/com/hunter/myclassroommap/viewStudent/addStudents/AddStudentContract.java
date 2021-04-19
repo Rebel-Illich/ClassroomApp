@@ -3,6 +3,7 @@ package com.hunter.myclassroommap.viewStudent.addStudents;
 import com.hunter.myclassroommap.model.Student;
 
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 
 
 public interface AddStudentContract {
@@ -19,8 +20,8 @@ public interface AddStudentContract {
     interface Repository{
         Single<Student> addStudent(Student studentModel);
 
-        Single<Boolean> updateClassroomStudentsCount(int classId, int countOfStudents);
-
         Single<Integer> getNumFiles(int classroomId);
+
+        Single<Boolean> updateClassroomStudentsCount(int classId, Integer count);
     }
 }

@@ -3,6 +3,7 @@ package com.hunter.myclassroommap.db.studentData;
 import android.content.Context;
 
 import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
+import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
 import com.hunter.myclassroommap.model.ClassRoomDao;
 import com.hunter.myclassroommap.model.Student;
@@ -20,11 +21,23 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
     private ClassroomDb db;
     private StudentDao studentDao;
     private ClassRoomDao classRoomDao;
+    private static StudentRepository sInstance;
 
-    public StudentRepository(Context context) {
-        db = ClassroomDb.getDatabase(context);
+    public StudentRepository(ClassroomDb database) {
+        db = database;
         studentDao = db.studentDao();
         classRoomDao = db.classRoomDao();
+    }
+
+    public static StudentRepository getInstance(final ClassroomDb database) {
+        if (sInstance == null) {
+            synchronized (StudentRepository.class) {
+                if (sInstance == null) {
+                    sInstance = new StudentRepository(database);
+                }
+            }
+        }
+        return sInstance;
     }
 
     @Override
@@ -34,6 +47,11 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
 
     public Single<Integer> getNumFiles(int classroomId) {
         return studentDao.getCount(classroomId);
+    }
+
+    @Override
+    public Single<Boolean> updateClassroomStudentsCount(int classId, Integer count) {
+        return null;
     }
 
     @Override
@@ -68,9 +86,8 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
         return classRoomDao.getListClassroom();
     }
 
-    public Single<Boolean> updateClassroomStudentsCount(int classId, int countOfStudents) {
-        return Single.create(emitter ->
-        {
+    public Single<Boolean> updateClassRoomStudentCount(int classId, int countOfStudents) {
+        return Single.create(emitter -> {
             classRoomDao.updateCount(classId, countOfStudents);
             emitter.onSuccess(true);
         });

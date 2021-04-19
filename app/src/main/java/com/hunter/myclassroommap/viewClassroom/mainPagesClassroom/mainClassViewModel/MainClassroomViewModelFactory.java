@@ -26,6 +26,4 @@ public class MainClassroomViewModelFactory extends ViewModelProvider.AndroidView
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
-
-
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,8 +28,13 @@ import java.util.ArrayList;
 import android.widget.Toast;
 
 import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.FragmentsNavigator;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.mainClassViewModel.MainClassroomViewModel;
+import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.mainClassViewModel.MainClassroomViewModelFactory;
+import com.hunter.myclassroommap.viewStudent.mainPageStudent.mainStudentViewModel.MainStudentViewModel;
+import com.hunter.myclassroommap.viewStudent.mainPageStudent.mainStudentViewModel.MainStudentViewModelFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Observer;
 import io.reactivex.Single;
@@ -37,7 +43,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainStudentFragment extends Fragment implements StudentAndClassContract.View, StudentAdapter.CallBackPosition{
 
+    private static final String KEY_PRODUCT_ID = "classroomId";
     private FragmentsNavigator fragmentsNavigator;
+    private MainStudentViewModel studentViewModel;
 
     private TextView classId, currentClassName, currentClassRoom, currentClassFloor, currentClassStudents;
     private FloatingActionButton floatingActionButton;
@@ -50,6 +58,7 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     private Integer classroomId;
     private final List<Student> studentList = new ArrayList<Student>();
     private ProgressDialog progressDialog;
+
 
     public static MainStudentFragment newInstance(FragmentsNavigator fragmentsNavigator) {
         MainStudentFragment instance =  new MainStudentFragment();
@@ -67,6 +76,10 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        studentViewModel =
+                new ViewModelProvider(this, new MainStudentViewModelFactory(Objects.requireNonNull(getActivity()).getApplication(),
+                        requireArguments().getInt(KEY_PRODUCT_ID))).get(MainStudentViewModel.class);
 
         classId = view.findViewById(R.id.student_id);
         currentClassName = view.findViewById(R.id.show_classroom_name);
@@ -95,6 +108,23 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         studentAdapter = new StudentAdapter(fragmentsNavigator, getActivity().getApplicationContext(), studentList, recyclerViewStudents);
         recyclerViewStudents.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewStudents.setAdapter(studentAdapter);
+
+        initStudentObserver();
+    }
+
+    private void initStudentObserver() {
+        studentViewModel.getStudent().observe(getViewLifecycleOwner(), students -> {
+            if (students.isEmpty()) {
+                empty_imageView.setVisibility(View.VISIBLE);
+            } else  {
+                empty_imageView.setVisibility(View.GONE);
+            }
+            studentList.addAll(students);
+            studentAdapter.notifyDataSetChanged();
+        });
+        studentViewModel.errorCR.observe(getViewLifecycleOwner(), error -> {
+            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+        });
     }
 
     @SuppressLint("CheckResult")
@@ -102,7 +132,6 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         currentClassName.setText(classRoom.getClassroomName());
         currentClassRoom.setText(String.valueOf(classRoom.getClassroomRoomNumber()));
         currentClassFloor.setText(String.valueOf(classRoom.getClassroomFloor()));
-   //   currentClassStudents.setText(String.valueOf(studentPresenter.getNum((int) classRoom.getId())));
         currentClassStudents.setText(String.valueOf(classRoom.getNumberOfStudents()));
     }
 

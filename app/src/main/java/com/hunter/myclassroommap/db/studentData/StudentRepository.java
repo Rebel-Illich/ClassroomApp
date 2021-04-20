@@ -2,6 +2,8 @@ package com.hunter.myclassroommap.db.studentData;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.classroomData.ClassroomRepository;
 import com.hunter.myclassroommap.model.ClassRoom;
@@ -41,7 +43,7 @@ public class StudentRepository implements StudentAndClassContract.Repository, Ad
     }
 
     @Override
-    public Single<List<Student>> getStudentsFromCurrentClass(int classroomId) {
+    public LiveData<List<Student>> getStudentsFromCurrentClass(int classroomId) {
         return studentDao.getStudentsCurrentClass(classroomId);
     }
 

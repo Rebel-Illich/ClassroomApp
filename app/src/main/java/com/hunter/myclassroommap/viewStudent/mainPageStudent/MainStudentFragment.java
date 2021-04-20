@@ -50,7 +50,6 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     private TextView classId, currentClassName, currentClassRoom, currentClassFloor, currentClassStudents;
     private FloatingActionButton floatingActionButton;
     private StudentAdapter studentAdapter;
-    private StudentPresenter studentPresenter;
     private RecyclerView recyclerViewStudents;
     private ArrayList<Student> currentClassModel = new ArrayList<>();
     private ClassRoom classRoom;
@@ -77,9 +76,11 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        MainStudentViewModelFactory factory = new MainStudentViewModelFactory(Objects.requireNonNull(
+                requireActivity()).getApplication(), (int) classRoom.getId());
+
         studentViewModel =
-                new ViewModelProvider(this, new MainStudentViewModelFactory(Objects.requireNonNull(getActivity()).getApplication(),
-                        requireArguments().getInt(KEY_PRODUCT_ID))).get(MainStudentViewModel.class);
+                new ViewModelProvider(this, factory).get(MainStudentViewModel.class);
 
         classId = view.findViewById(R.id.student_id);
         currentClassName = view.findViewById(R.id.show_classroom_name);
@@ -103,7 +104,6 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
             }
         });
 
-        studentPresenter = new StudentPresenter( this, getActivity().getApplicationContext());
         classroomId = getActivity().getIntent().getIntExtra("classroomId",0);
         studentAdapter = new StudentAdapter(fragmentsNavigator, getActivity().getApplicationContext(), studentList, recyclerViewStudents);
         recyclerViewStudents.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -113,10 +113,10 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
     }
 
     private void initStudentObserver() {
-        studentViewModel.getStudent().observe(getViewLifecycleOwner(), students -> {
+        studentViewModel.getStudents().observe(getViewLifecycleOwner(), students -> {
             if (students.isEmpty()) {
                 empty_imageView.setVisibility(View.VISIBLE);
-            } else  {
+            } else {
                 empty_imageView.setVisibility(View.GONE);
             }
             studentList.addAll(students);
@@ -144,33 +144,38 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
         super.onResume();
         getInfoAboutCurrClassroom();
         studentList.clear();
-        getStudentsData();
+        getStudentData();
     }
 
     @SuppressLint("CheckResult")
-    private void getStudentsData() {
-        studentPresenter.loadAllData((int) classRoom.getId())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                        students -> {
-                            if (students.isEmpty()) {
-                                empty_imageView.setVisibility(View.VISIBLE);
-                            } else  {
-                                empty_imageView.setVisibility(View.GONE);
-                            }
-                            studentList.addAll(students);
-                            studentAdapter.notifyDataSetChanged();
-                        },
-                        error ->{
-                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                );
+    private void getStudentData() {
+        studentViewModel.updateStudents();
     }
+//    @SuppressLint("CheckResult")
+//    private void getStudentsData() {
+//        studentPresenter.loadAllData((int) classRoom.getId())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(
+//                        students -> {
+//                            if (students.isEmpty()) {
+//                                empty_imageView.setVisibility(View.VISIBLE);
+//                            } else  {
+//                                empty_imageView.setVisibility(View.GONE);
+//                            }
+//                            studentList.addAll(students);
+//                            studentAdapter.notifyDataSetChanged();
+//                        },
+//                        error ->{
+//                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                );
+//    }
 
     public void setData(ClassRoom item) {
         this.classRoom = item;
     }
+
 
     @Override
     public void deleteStudentGetPosition(int position) {
@@ -181,7 +186,7 @@ public class MainStudentFragment extends Fragment implements StudentAndClassCont
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         progressDialog = ProgressDialog.show(getActivity(),"Deleting student","deleting...");
- //                       studentPresenter.alertToDeleteClass(position);
+ //                     studentPresenter.alertToDeleteClass(position);
                         studentAdapter.notifyItemRemoved(position);
                         studentAdapter.notifyDataSetChanged();
                     }

@@ -69,9 +69,9 @@ public class FragmentsNavigator implements FragmentsNavigatorContract {
     }
 
     public void mainStudent(ClassRoom item) {
-        if (mainStudentFragment == null) {
-            mainStudentFragment = MainStudentFragment.newInstance(this);
-        }
+            if (mainStudentFragment == null) {
+                mainStudentFragment = MainStudentFragment.newInstance(this);
+            }
 
         mainStudentFragment.setData(item);
 

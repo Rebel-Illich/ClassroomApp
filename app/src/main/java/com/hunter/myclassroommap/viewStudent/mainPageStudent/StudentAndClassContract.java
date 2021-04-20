@@ -1,5 +1,7 @@
 package com.hunter.myclassroommap.viewStudent.mainPageStudent;
 
+import androidx.lifecycle.LiveData;
+
 import com.hunter.myclassroommap.model.Student;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public interface StudentAndClassContract {
     }
 
     interface Repository{
-        Single<List<Student>> getStudentsFromCurrentClass(int classroomId);
+        LiveData<List<Student>> getStudentsFromCurrentClass(int classroomId);
         Single<Integer> getNumFiles(int classroomId);
     }
 }

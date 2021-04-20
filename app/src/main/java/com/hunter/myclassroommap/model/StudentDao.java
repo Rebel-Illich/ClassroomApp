@@ -1,5 +1,6 @@
 package com.hunter.myclassroommap.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -30,7 +31,7 @@ public interface StudentDao {
     Single<List<ClassRoom>> getAllClassRoom();
 
     @Query("SELECT * FROM student_table WHERE classroomId = :classroomId")
-    Single<List<Student>> getStudentsCurrentClass(int classroomId);
+    LiveData<List<Student>> getStudentsCurrentClass(int classroomId);
 
     @Query("SELECT COUNT(studentId) FROM student_table WHERE classroomId = :classroomId")
     Single<Integer> getCount(int classroomId);

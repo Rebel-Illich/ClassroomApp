@@ -103,10 +103,10 @@ public class MainClassroomFragment extends Fragment{
     public void onResume() {
         super.onResume();
         dataList.clear();
-        getStudentsData();
+        getClassData();
     }
         @SuppressLint("CheckResult")
-        private void getStudentsData() {
+        private void getClassData() {
             classroomViewModel.updateClassrooms();
         }
     }

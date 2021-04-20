@@ -51,7 +51,7 @@ public class AddClassRoomFragment extends Fragment implements AddClassRoomContra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        addPresenter = new AddClassRoomPresenter(this, view.getContext());
+        addPresenter = new AddClassRoomViewModel(this, view.getContext());
 
         nameAddInput = view.findViewById(R.id.name_input);
         roomAddInput = view.findViewById(R.id.room_input);

@@ -1,20 +1,15 @@
 package com.hunter.myclassroommap.viewStudent.addStudents;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +28,6 @@ import androidx.fragment.app.Fragment;
 
 import com.hunter.myclassroommap.R;
 import com.hunter.myclassroommap.model.ClassRoom;
-import com.hunter.myclassroommap.viewClassroom.mainPagesClassroom.MainClassroomActivity;
-import com.hunter.myclassroommap.viewStudent.mainPageStudent.MainStudentFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -105,7 +98,7 @@ public class AddStudentFragment extends Fragment implements AddStudentContract.V
 
 
         genderSpinner.setAdapter(genderSpinnerAdapter);
-        addStudentPresenter = new AddStudentPresenter(this, getActivity().getApplicationContext());
+        addStudentPresenter = new AddStudentViewModel(this, getActivity().getApplicationContext());
         positionClass = getActivity().getIntent().getIntExtra("classroomPosition",0);
         addStudentButton.setOnClickListener(v -> {
             addStudentFields();

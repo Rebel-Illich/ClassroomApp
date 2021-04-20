@@ -29,11 +29,10 @@ import io.reactivex.schedulers.Schedulers;
 public class MainClassroomViewModel extends ViewModel {
 
     private ClassroomRepository classroomRepository;
- // private MediatorLiveData<List<ClassRoom>> classRooms = new MediatorLiveData<>();
-    private MutableLiveData<List<ClassRoom>> classRooms = new MutableLiveData<>();
+    private MediatorLiveData<List<ClassRoom>> classRooms = new MediatorLiveData<>();
     public MutableLiveData<String> errorCR = new MutableLiveData<>();
 
-    public MainClassroomViewModel (@NonNull ClassroomRepository classroomRepository) {
+    public MainClassroomViewModel(@NonNull ClassroomRepository classroomRepository) {
         super();
         this.classroomRepository = classroomRepository;
     }
@@ -44,15 +43,19 @@ public class MainClassroomViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void updateClassrooms() {
-        classroomRepository.getListFromDataBase()
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<ClassRoom>>() {
-                    @Override
-                    public void accept(List<ClassRoom> classRoomList) throws Exception {
-                        classRooms.postValue(classRoomList);
-                    }
-                });
+        classRooms.addSource(classroomRepository.getListFromDataBaseLD(), list -> {
+            classRooms.setValue(list);
+        });
     }
+//        classroomRepository.getListFromDataBase()
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(new Consumer<List<ClassRoom>>() {
+//                    @Override
+//                    public void accept(List<ClassRoom> classRoomList) throws Exception {
+//                        classRooms.postValue(classRoomList);
+//                    }
+//                });
+
 
 //    public void getClassrooms() {
 //        classRooms.addSource(classroomRepository.getListFromDataBaseLD(), list ->
@@ -64,5 +67,6 @@ public class MainClassroomViewModel extends ViewModel {
 //            }
 //        });
 //    }
+
 }
 

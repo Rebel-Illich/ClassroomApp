@@ -15,15 +15,13 @@ public class MainClassroomViewModelFactory extends ViewModelProvider.AndroidView
 
     public MainClassroomViewModelFactory(@NonNull Application application) {
         super(application);
+
         classroomRepository = ((ClassApp) application).getClassRepository();
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class < T > modelClass) {
-        if (modelClass.isAssignableFrom(MainClassroomViewModel.class)) {
             return (T) new MainClassroomViewModel(classroomRepository);
-        }
-        throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }

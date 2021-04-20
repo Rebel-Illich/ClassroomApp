@@ -3,6 +3,8 @@ package com.hunter.myclassroommap.viewStudent.editStudents;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import androidx.lifecycle.ViewModel;
+
 import com.hunter.myclassroommap.db.classroomData.ClassroomDb;
 import com.hunter.myclassroommap.db.studentData.StudentRepository;
 import com.hunter.myclassroommap.model.Student;
@@ -12,12 +14,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class EditStudentPresenter implements EditStudentContract.Presenter {
+public class EditStudentViewModel extends ViewModel implements EditStudentContract.Presenter {
 
     EditStudentContract.View view;
     private final StudentRepository repository;
 
-    public EditStudentPresenter(EditStudentContract.View view, Context context) {
+    public EditStudentViewModel(EditStudentContract.View view, Context context) {
         this.view = view;
         this.repository = new StudentRepository(ClassroomDb.getDatabase(context, null));
     }

@@ -98,6 +98,7 @@ public class ClassroomRepository {
     public LiveData<List<ClassRoom>> getListFromDataBaseLD() {
         return classRoomDao.getListClassroomLD();
     }
+
     public Single<Boolean> updateClassroomStudentsCount(int classId, int countOfStudents) {
         return Single.create(emitter ->
         {

@@ -66,7 +66,7 @@ public class UpdateClassroomFragment extends Fragment implements UpdateClassroom
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editClassroomPresenter = new UpdateClassroomPresenter(this, view.getContext());
+        editClassroomPresenter = new UpdateClassroomViewModel(this, view.getContext());
 
         nameUpdate = view.findViewById(R.id.name_input2);
         roomUpdate = view.findViewById(R.id.room_input2);

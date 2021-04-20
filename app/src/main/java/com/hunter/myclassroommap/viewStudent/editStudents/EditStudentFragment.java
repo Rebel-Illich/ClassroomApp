@@ -59,7 +59,7 @@ public class EditStudentFragment extends Fragment implements EditStudentContract
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editStudentPresenter = new EditStudentPresenter(this, view.getContext());
+        editStudentPresenter = new EditStudentViewModel(this, view.getContext());
 
         firstNameStudent = view.findViewById(R.id.edit_firstName_student);
         secondNameStudent = view.findViewById(R.id.edit_secondName_student);
